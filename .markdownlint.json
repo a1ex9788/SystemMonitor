@@ -1,0 +1,6 @@
+{
+    // line-length: Line length.
+    "MD013": false,
+    // single-trailing-newline: Files should end with a single newline character.
+    "MD047": false
+}
