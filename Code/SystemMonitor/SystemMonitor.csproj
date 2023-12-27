@@ -1,17 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>SystemMonitor</AssemblyName>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logic\**" />
     <Compile Remove="Tests\**" />
+    <EmbeddedResource Remove="Logic\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Logic\**" />
     <None Remove="Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Logic\Logic.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>SystemMonitor.Tests</AssemblyName>
+    <AssemblyName>SystemMonitor.Logic.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SystemMonitor.csproj" />
+    <ProjectReference Include="..\Logic.csproj" />
   </ItemGroup>
 
 </Project>
