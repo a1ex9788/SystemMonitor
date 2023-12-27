@@ -1,45 +1,49 @@
+[*]
+# Editor Guidelines VS extension.
+guidelines = 100
+
 [*.cs]
 dotnet_style_qualification_for_field = true:error
 dotnet_style_qualification_for_property = true:error
 dotnet_style_qualification_for_method = true:error
 dotnet_style_qualification_for_event = true:error
 
-# CA1014: Mark assemblies with CLSCompliant
+# CA1014: Mark assemblies with CLSCompliant.
 dotnet_diagnostic.CA1014.severity = none
 
-# CA1031: Do not catch general exception types
+# CA1031: Do not catch general exception types.
 dotnet_diagnostic.CA1031.severity = none
 
-# CA1303: Do not pass literals as localized parameters
+# CA1303: Do not pass literals as localized parameters.
 dotnet_diagnostic.CA1303.severity = none
 
-# CA1822: Mark members as static
+# CA1822: Mark members as static.
 dotnet_diagnostic.CA1822.severity = error
 
-# CA2007: Consider calling ConfigureAwait on the awaited task
+# CA2007: Consider calling ConfigureAwait on the awaited task.
 dotnet_diagnostic.CA2007.severity = none
 
-# CS1998: Async method lacks 'await' operators and will run synchronously
+# CS1998: Async method lacks 'await' operators and will run synchronously.
 dotnet_diagnostic.CS1998.severity = error
 
-# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed.
 dotnet_diagnostic.CS4014.severity = error
 
-# IDE0052: Private member 'InstallationsPrinter.cancellationToken' can be removed as the value assigned to it is never read
+# IDE0052: Private member 'InstallationsPrinter.cancellationToken' can be removed as the value assigned to it is never read.
 dotnet_diagnostic.IDE0052.severity = error
 
-# IDE0059: Remove unnecessary value assignment
+# IDE0059: Remove unnecessary value assignment.
 dotnet_diagnostic.IDE0059.severity = error
 
-# IDE0060: Remove unused parameter
+# IDE0060: Remove unused parameter.
 dotnet_diagnostic.IDE0060.severity = error
 
-# IDE0090: 'new' expression can be simplified
+# IDE0090: 'new' expression can be simplified.
 dotnet_diagnostic.IDE0090.severity = none
 
-# VSTHRD110: Observe result of async calls
+# VSTHRD110: Observe result of async calls.
 dotnet_diagnostic.VSTHRD110.severity = error
 
 [*Tests.cs]
-# CA1707: Identifiers should not contain underscores
+# CA1707: Identifiers should not contain underscores.
 dotnet_diagnostic.CA1707.severity = none

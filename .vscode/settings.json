@@ -2,6 +2,9 @@
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.renderWhitespace": "all",
+    "editor.rulers": [
+        100
+    ],
     "editor.wordWrap": "on",
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
