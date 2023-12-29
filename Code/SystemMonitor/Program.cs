@@ -32,14 +32,14 @@ namespace SystemMonitor
 
         private static void DefineMonitorCommand(CommandLineApplication commandLineApplication)
         {
-            commandLineApplication.OnExecuteAsync(async ct =>
+            commandLineApplication.OnExecuteAsync(ct =>
             {
                 IServiceProvider serviceProvider = new MonitorCommandServiceProvider(ct);
 
                 IMonitorCommand monitorCommand = serviceProvider
                     .GetRequiredService<IMonitorCommand>();
 
-                await monitorCommand.ExecuteAsync();
+                return monitorCommand.ExecuteAsync();
             });
         }
     }

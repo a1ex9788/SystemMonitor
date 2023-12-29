@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SystemMonitor.Logic.Utilities;
 
 namespace SystemMonitor.Logic
@@ -7,7 +8,14 @@ namespace SystemMonitor.Logic
     {
         public Task ExecuteAsync()
         {
-            return directoriesMonitor.MonitorAsync(@"C:\");
+            List<Task> tasks = [];
+
+            foreach (string drive in DrivesObtainer.GetDrives())
+            {
+                tasks.Add(directoriesMonitor.MonitorAsync(drive));
+            }
+
+            return Task.WhenAll(tasks);
         }
     }
 }
