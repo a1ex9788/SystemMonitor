@@ -15,7 +15,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         public async Task MonitorAsync_FileChanged_PrintsFileName()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -25,11 +25,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 cancellationTokenSource.Token);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testPath);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testPath);
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
             await File.Create(filePath).DisposeAsync();
             await File.WriteAllTextAsync(filePath, string.Empty);
 
@@ -46,7 +46,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         public async Task MonitorAsync_FileCreated_PrintsFileName()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -56,11 +56,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 cancellationTokenSource.Token);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testPath);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testPath);
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
             await File.Create(filePath).DisposeAsync();
 
             // Assert.
@@ -76,7 +76,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         public async Task MonitorAsync_FileDeleted_PrintsFileName()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -86,11 +86,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 cancellationTokenSource.Token);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testPath);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testPath);
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
             await File.Create(filePath).DisposeAsync();
             File.Delete(filePath);
 
@@ -107,7 +107,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         public async Task MonitorAsync_FileRenamed_PrintsFileName()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -117,12 +117,12 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 cancellationTokenSource.Token);
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testPath);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string oldFilePath = TempPathsObtainer.GetTempFile(testPath);
-            string newFilePath = TempPathsObtainer.GetTempFile(testPath);
+            string oldFilePath = TempPathsObtainer.GetTempFile(testDirectory);
+            string newFilePath = TempPathsObtainer.GetTempFile(testDirectory);
             await File.Create(oldFilePath).DisposeAsync();
             File.Move(oldFilePath, newFilePath);
 

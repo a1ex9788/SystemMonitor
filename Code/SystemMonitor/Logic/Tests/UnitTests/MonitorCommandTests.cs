@@ -16,7 +16,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests
         public async Task ExecuteAsync_DirectoryNotSpecified_MonitorAllDrives()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -30,7 +30,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = Path.Combine(testPath, Guid.NewGuid().ToString());
+            string filePath = Path.Combine(testDirectory, Guid.NewGuid().ToString());
             await File.Create(filePath).DisposeAsync();
 
             // Assert.

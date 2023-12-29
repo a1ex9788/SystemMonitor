@@ -16,7 +16,7 @@ namespace SystemMonitor.Tests.IntegrationTests
         {
             // Arrange.
             string[] args = [];
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -33,7 +33,7 @@ namespace SystemMonitor.Tests.IntegrationTests
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testPath);
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
 
             await File.Create(filePath).DisposeAsync();
             await File.WriteAllTextAsync(filePath, string.Empty);
