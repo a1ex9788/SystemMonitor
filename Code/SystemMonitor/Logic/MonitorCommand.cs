@@ -6,16 +6,21 @@ namespace SystemMonitor.Logic
 {
     public class MonitorCommand(DirectoriesMonitor directoriesMonitor) : IMonitorCommand
     {
-        public Task ExecuteAsync()
+        public Task ExecuteAsync(string? directory)
         {
-            List<Task> tasks = [];
-
-            foreach (string drive in DrivesObtainer.GetDrives())
+            if (directory is null)
             {
-                tasks.Add(directoriesMonitor.MonitorAsync(drive));
+                List<Task> tasks = [];
+
+                foreach (string drive in DrivesObtainer.GetDrives())
+                {
+                    tasks.Add(directoriesMonitor.MonitorAsync(drive));
+                }
+
+                return Task.WhenAll(tasks);
             }
 
-            return Task.WhenAll(tasks);
+            return directoriesMonitor.MonitorAsync(directory);
         }
     }
 }

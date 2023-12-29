@@ -5,18 +5,23 @@ namespace SystemMonitor.TestsUtilities
 {
     public class TempPathsObtainer
     {
-        public static string GetTempDirectory()
+        public static string GetTempDirectory(string parentDirectory)
         {
-            string tempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            string tempDirectory = Path.Combine(parentDirectory, Guid.NewGuid().ToString());
 
             Directory.CreateDirectory(tempDirectory);
 
             return tempDirectory;
         }
 
-        public static string GetTempFile(string directory)
+        public static string GetTempDirectory()
         {
-            return Path.Combine(directory, Guid.NewGuid().ToString());
+            return GetTempDirectory(Path.GetTempPath());
+        }
+
+        public static string GetTempFile(string parentDirectory)
+        {
+            return Path.Combine(parentDirectory, Guid.NewGuid().ToString());
         }
 
         public static string GetTempFile()
