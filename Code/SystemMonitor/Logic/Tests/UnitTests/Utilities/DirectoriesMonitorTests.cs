@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SystemMonitor.Logic.Utilities;
 using SystemMonitor.TestsUtilities;
 
-namespace SystemMonitor.Logic.Tests.UnitTests
+namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 {
     [TestClass]
     public class DirectoriesMonitorTests
