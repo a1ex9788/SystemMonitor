@@ -6,8 +6,8 @@ Monitor of file system changes in a computer. It also monitors Windows registry 
 
 The program is formed by one command that has two ways of monitoring the system:
 
-- Monitoring the changes on all the folders of the file system.
-- Monitoring the changes on a specific folder.
+- Monitoring the changes on all the directories of the file system.
+- Monitoring the changes on a specific directory.
 
 ### Output
 
@@ -29,4 +29,4 @@ The application creates subscriptions to system events to be notified of changes
 
 Option|Description
 -|-
--f Folder|The folder to monitor. The whole file system is monitored if it is not specified.
+-f directory|The directory to monitor. The whole file system is monitored if it is not specified.

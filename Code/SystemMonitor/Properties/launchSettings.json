@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Monitor all drives": {
+      "commandName": "Project"
+    },
+    "Monitor C:": {
+      "commandName": "Project",
+      "commandLineArgs": "-d C:\\"
+    }
+  }
+}

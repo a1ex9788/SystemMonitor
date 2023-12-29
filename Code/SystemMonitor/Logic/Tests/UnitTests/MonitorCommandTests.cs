@@ -26,11 +26,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests
                 new DirectoriesMonitor(cancellationTokenSource.Token));
 
             // Act.
-            Task task = monitorCommand.ExecuteAsync();
+            Task task = monitorCommand.ExecuteAsync(directory: null);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = Path.Combine(testDirectory, Guid.NewGuid().ToString());
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
             await File.Create(filePath).DisposeAsync();
 
             // Assert.
@@ -41,6 +41,43 @@ namespace SystemMonitor.Logic.Tests.UnitTests
             {
                 stringWriter.ToString().Should().Contain($"Monitoring directory '{drive}'...");
             }
+
+            cancellationTokenSource.Cancel();
+            await task;
+        }
+
+        [TestMethod]
+        public async Task ExecuteAsync_DirectorySpecified_DirectoryMonitored()
+        {
+            // Arrange.
+            string parentDirectory = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory(parentDirectory);
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            MonitorCommand monitorCommand = new MonitorCommand(
+                new DirectoriesMonitor(cancellationTokenSource.Token));
+
+            // Act.
+            Task task = monitorCommand.ExecuteAsync(testDirectory);
+
+            await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
+
+            string fileInParentPath = TempPathsObtainer.GetTempFile(parentDirectory);
+            await File.Create(fileInParentPath).DisposeAsync();
+
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
+            await File.Create(filePath).DisposeAsync();
+
+            // Assert.
+            await EventsWaiter.WaitForEventsProsecutionAsync(
+                stringWriter,
+                expectedNotCreatedFiles: [fileInParentPath],
+                expectedCreatedFiles: [filePath]);
+
+            stringWriter.ToString().Should().Contain($"Monitoring directory '{testDirectory}'...");
 
             cancellationTokenSource.Cancel();
             await task;

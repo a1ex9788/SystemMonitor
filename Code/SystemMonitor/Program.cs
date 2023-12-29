@@ -32,6 +32,11 @@ namespace SystemMonitor
 
         private static void DefineMonitorCommand(CommandLineApplication commandLineApplication)
         {
+            CommandOption directoryCommandOption = commandLineApplication.Option(
+                "-d",
+                "The directory to monitor. The whole file system is monitored if it is not specified.",
+                CommandOptionType.SingleValue);
+
             commandLineApplication.OnExecuteAsync(ct =>
             {
                 IServiceProvider serviceProvider = new MonitorCommandServiceProvider(ct);
@@ -39,7 +44,7 @@ namespace SystemMonitor
                 IMonitorCommand monitorCommand = serviceProvider
                     .GetRequiredService<IMonitorCommand>();
 
-                return monitorCommand.ExecuteAsync();
+                return monitorCommand.ExecuteAsync(directoryCommandOption.Value());
             });
         }
     }
