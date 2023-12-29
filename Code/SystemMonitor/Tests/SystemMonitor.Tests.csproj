@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SystemMonitor.csproj" />
+    <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
   </ItemGroup>
 
 </Project>

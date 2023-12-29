@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using SystemMonitor.Logic;
+using SystemMonitor.Logic.Utilities;
 
 namespace SystemMonitor
 {
@@ -33,6 +34,7 @@ namespace SystemMonitor
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMonitorCommand, MonitorCommand>();
+            services.AddScoped<DirectoriesMonitor>();
         }
     }
 }

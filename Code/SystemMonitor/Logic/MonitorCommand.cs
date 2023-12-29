@@ -1,15 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using SystemMonitor.Logic.Utilities;
 
 namespace SystemMonitor.Logic
 {
-    public class MonitorCommand : IMonitorCommand
+    public class MonitorCommand(DirectoriesMonitor directoriesMonitor) : IMonitorCommand
     {
         public Task ExecuteAsync()
         {
-            Console.Write("Hola");
-
-            return Task.CompletedTask;
+            return directoriesMonitor.MonitorAsync(@"C:\");
         }
     }
 }

@@ -8,10 +8,13 @@
   <ItemGroup>
     <Compile Remove="Logic\**" />
     <Compile Remove="Tests\**" />
+    <Compile Remove="TestUtilities\**" />
     <EmbeddedResource Remove="Logic\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <EmbeddedResource Remove="TestUtilities\**" />
     <None Remove="Logic\**" />
     <None Remove="Tests\**" />
+    <None Remove="TestUtilities\**" />
   </ItemGroup>
 
   <ItemGroup>
