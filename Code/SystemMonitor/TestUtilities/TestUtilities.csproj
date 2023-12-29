@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>SystemMonitor.TestUtilities</AssemblyName>
+    <RootNamespace>SystemMonitor.TestUtilities</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

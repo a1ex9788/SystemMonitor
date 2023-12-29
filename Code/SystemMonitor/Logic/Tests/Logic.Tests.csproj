@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>SystemMonitor.Logic.Tests</AssemblyName>
+    <RootNamespace>SystemMonitor.Logic.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
