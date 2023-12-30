@@ -2,12 +2,10 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic.Utilities
 {
-    public class DirectoriesMonitor(
-        IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
+    public class DirectoriesMonitor(OutputWriter outputWriter, CancellationToken cancellationToken)
     {
         public async Task MonitorAsync(string directory)
         {
@@ -39,32 +37,27 @@ namespace SystemMonitor.Logic.Utilities
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            this.PrintMessage($"Changed: {e.FullPath}");
+            outputWriter.WriteChangedFile(e.FullPath);
         }
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            this.PrintMessage($"Created: {e.FullPath}");
+            outputWriter.WriteCreatedFile(e.FullPath);
         }
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
-            this.PrintMessage($"Deleted: {e.FullPath}");
+            outputWriter.WriteDeletedFile(e.FullPath);
         }
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
-            this.PrintMessage($"Renamed: {e.OldFullPath} to {e.FullPath}");
+            outputWriter.WriteRenamedFile(e.OldFullPath, e.FullPath);
         }
 
         private void OnError(object sender, ErrorEventArgs e)
         {
-            this.PrintMessage($"Error: {e.GetException()}");
-        }
-
-        private void PrintMessage(string message)
-        {
-            Console.WriteLine($"[{dateTimeProvider.GetCurrentDateTime()}] {message}");
+            outputWriter.WriteError(e.GetException().Message);
         }
     }
 }
