@@ -2,10 +2,12 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic.Utilities
 {
-    public class DirectoriesMonitor(CancellationToken cancellationToken)
+    public class DirectoriesMonitor(
+        IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
     {
         public async Task MonitorAsync(string directory)
         {
@@ -16,11 +18,11 @@ namespace SystemMonitor.Logic.Utilities
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
 
-            fileSystemWatcher.Changed += OnChanged;
-            fileSystemWatcher.Created += OnCreated;
-            fileSystemWatcher.Deleted += OnDeleted;
-            fileSystemWatcher.Renamed += OnRenamed;
-            fileSystemWatcher.Error += OnError;
+            fileSystemWatcher.Changed += this.OnChanged;
+            fileSystemWatcher.Created += this.OnCreated;
+            fileSystemWatcher.Deleted += this.OnDeleted;
+            fileSystemWatcher.Renamed += this.OnRenamed;
+            fileSystemWatcher.Error += this.OnError;
 
             try
             {
@@ -35,29 +37,34 @@ namespace SystemMonitor.Logic.Utilities
             }
         }
 
-        private static void OnChanged(object sender, FileSystemEventArgs e)
+        private void OnChanged(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Changed: {e.FullPath}");
+            this.PrintMessage($"Changed: {e.FullPath}");
         }
 
-        private static void OnCreated(object sender, FileSystemEventArgs e)
+        private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Created: {e.FullPath}");
+            this.PrintMessage($"Created: {e.FullPath}");
         }
 
-        private static void OnDeleted(object sender, FileSystemEventArgs e)
+        private void OnDeleted(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Deleted: {e.FullPath}");
+            this.PrintMessage($"Deleted: {e.FullPath}");
         }
 
-        private static void OnRenamed(object sender, RenamedEventArgs e)
+        private void OnRenamed(object sender, RenamedEventArgs e)
         {
-            Console.WriteLine($"[{DateTime.Now.TimeOfDay}] Renamed: {e.OldFullPath} to {e.FullPath}");
+            this.PrintMessage($"Renamed: {e.OldFullPath} to {e.FullPath}");
         }
 
-        private static void OnError(object sender, ErrorEventArgs e)
+        private void OnError(object sender, ErrorEventArgs e)
         {
-            Console.WriteLine($"Error: {e.GetException()}");
+            this.PrintMessage($"Error: {e.GetException()}");
+        }
+
+        private void PrintMessage(string message)
+        {
+            Console.WriteLine($"[{dateTimeProvider.GetCurrentDateTime()}] {message}");
         }
     }
 }

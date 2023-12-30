@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SystemMonitor.Logic.Tests.Utilities;
 using SystemMonitor.Logic.Utilities;
 using SystemMonitor.TestsUtilities;
 
@@ -22,8 +24,10 @@ namespace SystemMonitor.Logic.Tests.UnitTests
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            MonitorCommand monitorCommand = new MonitorCommand(
-                new DirectoriesMonitor(cancellationTokenSource.Token));
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token);
+            IMonitorCommand monitorCommand = serviceProvider
+                .GetRequiredService<IMonitorCommand>();
 
             // Act.
             Task task = monitorCommand.ExecuteAsync(directory: null);
@@ -57,8 +61,10 @@ namespace SystemMonitor.Logic.Tests.UnitTests
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            MonitorCommand monitorCommand = new MonitorCommand(
-                new DirectoriesMonitor(cancellationTokenSource.Token));
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token);
+            IMonitorCommand monitorCommand = serviceProvider
+                .GetRequiredService<IMonitorCommand>();
 
             // Act.
             Task task = monitorCommand.ExecuteAsync(testDirectory);
