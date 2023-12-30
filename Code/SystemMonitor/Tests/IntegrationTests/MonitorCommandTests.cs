@@ -7,7 +7,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
-using SystemMonitor.TestsUtilities;
+using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.TestUtilities;
 
 namespace SystemMonitor.Tests.IntegrationTests
 {
@@ -15,20 +16,22 @@ namespace SystemMonitor.Tests.IntegrationTests
     public class MonitorCommandTests
     {
         [TestMethod]
-        public async Task MonitorCommand_SomeFileChanges_PrintsFileChanges()
+        public async Task MonitorCommand_SomeFileChanges_PrintsAndSavesFileChanges()
         {
             // Arrange.
-            string[] args = [];
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            string[] args = ["-d", testDirectory];
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            DateTime now = RandomDateTimeGenerator.Get();
             MonitorCommandServiceProvider.ExtraRegistrationsAction =
                 sc =>
                 {
                     sc.AddSingleton(typeof(CancellationToken), cancellationTokenSource.Token);
+                    sc.AddScoped<IDateTimeProvider>(_ => new DateTimeProviderFake(now));
                 };
 
             // Act.
@@ -49,6 +52,11 @@ namespace SystemMonitor.Tests.IntegrationTests
 
             cancellationTokenSource.Cancel();
             await task;
+
+            string expectedContent =
+                $"[{now}] Created: {filePath}{Environment.NewLine}" +
+                $"[{now}] Changed: {filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
         }
 
         [TestMethod]
@@ -83,8 +91,8 @@ namespace SystemMonitor.Tests.IntegrationTests
         public void MonitorCommand_DirectorySpecified_DirectoryPassed()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
-            string[] args = ["-d", testPath];
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
+            string[] args = ["-d", testDirectory];
 
             string? passedDirectory = null;
 
@@ -105,14 +113,14 @@ namespace SystemMonitor.Tests.IntegrationTests
             Program.Main(args);
 
             // Assert.
-            passedDirectory.Should().Be(testPath);
+            passedDirectory.Should().Be(testDirectory);
         }
 
         [TestMethod]
         public void MonitorCommand_DirectoryOptionSpecifiedButMissingValue_PrintsError()
         {
             // Arrange.
-            string testPath = TempPathsObtainer.GetTempDirectory();
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
             string[] args = ["-d"];
 
             using StringWriter stringWriter = new StringWriter();

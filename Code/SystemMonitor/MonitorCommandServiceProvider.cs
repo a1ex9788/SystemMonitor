@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
+using SystemMonitor.Logic;
 
 namespace SystemMonitor
 {

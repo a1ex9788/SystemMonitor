@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic.Tests.Utilities;
 using SystemMonitor.Logic.Utilities;
-using SystemMonitor.TestsUtilities;
+using SystemMonitor.TestUtilities;
 
 namespace SystemMonitor.Logic.Tests.UnitTests
 {

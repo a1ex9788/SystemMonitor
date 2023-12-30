@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic.Tests.Utilities;
 using SystemMonitor.Logic.Utilities;
-using SystemMonitor.TestsUtilities;
+using SystemMonitor.TestUtilities;
 
 namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 {
@@ -14,7 +14,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
     public class DirectoriesMonitorTests
     {
         [TestMethod]
-        public async Task MonitorAsync_FileChanged_PrintsFileName()
+        public async Task MonitorAsync_FileChanged_PrintsAndSavesFileName()
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
@@ -23,8 +23,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+                cancellationTokenSource.Token, now);
             DirectoriesMonitor directoriesMonitor = serviceProvider
                 .GetRequiredService<DirectoriesMonitor>();
 
@@ -44,10 +45,15 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 
             cancellationTokenSource.Cancel();
             await task;
+
+            string expectedContent =
+                $"[{now}] Created: {filePath}{Environment.NewLine}" +
+                $"[{now}] Changed: {filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
         }
 
         [TestMethod]
-        public async Task MonitorAsync_FileCreated_PrintsFileName()
+        public async Task MonitorAsync_FileCreated_PrintsAndSavesFileName()
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
@@ -56,8 +62,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+                cancellationTokenSource.Token, now);
             DirectoriesMonitor directoriesMonitor = serviceProvider
                 .GetRequiredService<DirectoriesMonitor>();
 
@@ -76,10 +83,13 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 
             cancellationTokenSource.Cancel();
             await task;
+
+            string expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
         }
 
         [TestMethod]
-        public async Task MonitorAsync_FileDeleted_PrintsFileName()
+        public async Task MonitorAsync_FileDeleted_PrintsAndSavesFileName()
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
@@ -88,8 +98,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+                cancellationTokenSource.Token, now);
             DirectoriesMonitor directoriesMonitor = serviceProvider
                 .GetRequiredService<DirectoriesMonitor>();
 
@@ -109,10 +120,15 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 
             cancellationTokenSource.Cancel();
             await task;
+
+            string expectedContent =
+                $"[{now}] Created: {filePath}{Environment.NewLine}" +
+                $"[{now}] Deleted: {filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
         }
 
         [TestMethod]
-        public async Task MonitorAsync_FileRenamed_PrintsFileName()
+        public async Task MonitorAsync_FileRenamed_PrintsAndSavesFileName()
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
@@ -121,8 +137,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+                cancellationTokenSource.Token, now);
             DirectoriesMonitor directoriesMonitor = serviceProvider
                 .GetRequiredService<DirectoriesMonitor>();
 
@@ -143,6 +160,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 
             cancellationTokenSource.Cancel();
             await task;
+
+            string expectedContent =
+                $"[{now}] Created: {oldFilePath}{Environment.NewLine}" +
+                $"[{now}] Renamed: {oldFilePath} to {newFilePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
         }
     }
 }
