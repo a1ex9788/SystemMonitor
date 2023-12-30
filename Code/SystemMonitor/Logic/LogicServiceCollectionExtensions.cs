@@ -1,8 +1,8 @@
-﻿using SystemMonitor.Logic;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SystemMonitor.Logic.Utilities;
 using SystemMonitor.Logic.Utilities.DateTimes;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace SystemMonitor.Logic
 {
     public static class LogicServiceCollectionExtensions
     {
