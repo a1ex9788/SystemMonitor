@@ -2,24 +2,19 @@
 using System;
 using System.Threading;
 
-namespace SystemMonitor
+namespace SystemMonitor.Logic.Tests.Utilities
 {
-    internal class MonitorCommandServiceProvider : IServiceProvider
+    internal class MonitorCommandTestServiceProvider : IServiceProvider
     {
         private readonly ServiceProvider serviceProvider;
 
-        // Hook for tests.
-        internal static Action<IServiceCollection>? ExtraRegistrationsAction;
-
-        internal MonitorCommandServiceProvider(CancellationToken cancellationToken)
+        internal MonitorCommandTestServiceProvider(CancellationToken cancellationToken)
         {
             IServiceCollection services = new ServiceCollection();
 
             services.AddSingleton(typeof(CancellationToken), cancellationToken);
 
             ConfigureServices(services);
-
-            ExtraRegistrationsAction?.Invoke(services);
 
             this.serviceProvider = services.BuildServiceProvider();
         }

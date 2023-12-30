@@ -1,8 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SystemMonitor.Logic.Tests.Utilities;
 using SystemMonitor.Logic.Utilities;
 using SystemMonitor.TestsUtilities;
 
@@ -21,8 +23,10 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            DirectoriesMonitor directoriesMonitor = new DirectoriesMonitor(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory);
@@ -52,8 +56,10 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            DirectoriesMonitor directoriesMonitor = new DirectoriesMonitor(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory);
@@ -82,8 +88,10 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            DirectoriesMonitor directoriesMonitor = new DirectoriesMonitor(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory);
@@ -113,8 +121,10 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            DirectoriesMonitor directoriesMonitor = new DirectoriesMonitor(
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory);
