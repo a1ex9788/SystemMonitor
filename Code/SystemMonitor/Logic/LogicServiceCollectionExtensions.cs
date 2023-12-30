@@ -12,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<DirectoriesMonitor>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<OutputWriter>();
 
             return services;
         }
