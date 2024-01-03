@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -164,6 +165,48 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             string expectedContent =
                 $"[{now}] Created: {oldFilePath}{Environment.NewLine}" +
                 $"[{now}] Renamed: {oldFilePath} to {newFilePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+        }
+
+        [TestMethod]
+        public async Task MonitorAsync_MonitoringCurrentDirectory_OutputFileChangesAreNotAnalysed()
+        {
+            // Arrange.
+            string testDirectory = Directory.GetCurrentDirectory();
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            DateTime now = RandomDateTimeGenerator.Get();
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token, now);
+            DirectoriesMonitor directoriesMonitor = serviceProvider
+                .GetRequiredService<DirectoriesMonitor>();
+
+            // Act.
+            Task task = directoriesMonitor.MonitorAsync(testDirectory);
+
+            await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
+
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
+            await File.Create(filePath).DisposeAsync();
+            await File.WriteAllTextAsync(filePath, string.Empty);
+
+            // Assert.
+            await EventsWaiter.WaitForEventsProsecutionAsync(
+                stringWriter,
+                expectedChangedFiles: [filePath],
+                expectedCreatedFiles: [filePath]);
+
+            cancellationTokenSource.Cancel();
+            await task;
+
+            stringWriter.ToString().Should().NotContain("Events.txt");
+
+            string expectedContent =
+                $"[{now}] Created: {filePath}{Environment.NewLine}" +
+                $"[{now}] Changed: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
         }
     }
