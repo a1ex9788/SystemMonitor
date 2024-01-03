@@ -10,8 +10,14 @@ namespace SystemMonitor.Logic.Utilities
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IFile file;
 
-        private readonly string OutputDirectory;
-        private readonly string EventsFile;
+        private readonly string outputDirectory;
+        private readonly string fileChangesDirectory;
+        private readonly string eventsFile;
+        private readonly string allFileChangesFile;
+        private readonly string changedFilesFile;
+        private readonly string createdFilesFile;
+        private readonly string deletedFilesFile;
+        private readonly string renamedFilesFile;
 
         public OutputWriter(IDateTimeProvider dateTimeProvider)
         {
@@ -19,11 +25,18 @@ namespace SystemMonitor.Logic.Utilities
             this.file = new FileSystem().File;
 
             string formattedData = dateTimeProvider.GetCurrentDateTime().ToDirectoryName();
-            this.OutputDirectory = Path.Combine(Directory.GetCurrentDirectory(), formattedData);
+            this.outputDirectory = Path.Combine(Directory.GetCurrentDirectory(), formattedData);
+            Directory.CreateDirectory(this.outputDirectory);
 
-            Directory.CreateDirectory(this.OutputDirectory);
+            this.fileChangesDirectory = Path.Combine(this.outputDirectory, "FileChanges");
+            Directory.CreateDirectory(this.fileChangesDirectory);
 
-            this.EventsFile = Path.Combine(this.OutputDirectory, "Events.txt");
+            this.eventsFile = Path.Combine(this.outputDirectory, "Events.txt");
+            this.allFileChangesFile = Path.Combine(this.fileChangesDirectory, "AllFileChanges.txt");
+            this.changedFilesFile = Path.Combine(this.fileChangesDirectory, "ChangedFiles.txt");
+            this.createdFilesFile = Path.Combine(this.fileChangesDirectory, "CreatedFiles.txt");
+            this.deletedFilesFile = Path.Combine(this.fileChangesDirectory, "DeletedFiles.txt");
+            this.renamedFilesFile = Path.Combine(this.fileChangesDirectory, "RenamedFiles.txt");
         }
 
         public void WriteChangedFile(string filePath)
@@ -38,6 +51,8 @@ namespace SystemMonitor.Logic.Utilities
             Console.WriteLine(message);
 
             this.AppendToEventsFile(message);
+
+            this.AddFilePathToChangesFile(this.changedFilesFile, filePath);
         }
 
         public void WriteCreatedFile(string filePath)
@@ -52,6 +67,8 @@ namespace SystemMonitor.Logic.Utilities
             Console.WriteLine(message);
 
             this.AppendToEventsFile(message);
+
+            this.AddFilePathToChangesFile(this.createdFilesFile, filePath);
         }
 
         public void WriteDeletedFile(string filePath)
@@ -61,6 +78,8 @@ namespace SystemMonitor.Logic.Utilities
             Console.WriteLine(message);
 
             this.AppendToEventsFile(message);
+
+            this.AddFilePathToChangesFile(this.deletedFilesFile, filePath);
         }
 
         public void WriteRenamedFile(string oldFilePath, string newFilePath)
@@ -70,6 +89,8 @@ namespace SystemMonitor.Logic.Utilities
             Console.WriteLine(message);
 
             this.AppendToEventsFile(message);
+
+            this.AddFilePathToChangesFile(this.renamedFilesFile, $"{oldFilePath} -> {newFilePath}");
         }
 
         public void WriteError(string error)
@@ -83,7 +104,7 @@ namespace SystemMonitor.Logic.Utilities
 
         private bool IsOutputFile(string filePath)
         {
-            return filePath.StartsWith(this.OutputDirectory);
+            return filePath.StartsWith(this.outputDirectory);
         }
 
         private string FormatMessage(string message)
@@ -95,7 +116,28 @@ namespace SystemMonitor.Logic.Utilities
         {
             message += Environment.NewLine;
 
-            this.file.AppendAllText(this.EventsFile, message);
+            this.file.AppendAllText(this.eventsFile, message);
+        }
+
+        private void AddFilePathToChangesFile(string changesFile, string filePath)
+        {
+            string[] newContent;
+
+            if (this.file.Exists(changesFile))
+            {
+                string[] content = this.file.ReadAllLines(changesFile);
+
+                OrderedStringList orderedStringList = new OrderedStringList(content);
+                orderedStringList.AddIfNotExist(filePath);
+
+                newContent = orderedStringList.Items;
+            }
+            else
+            {
+                newContent = [filePath];
+            }
+
+            this.file.WriteAllLines(changesFile, newContent);
         }
     }
 }

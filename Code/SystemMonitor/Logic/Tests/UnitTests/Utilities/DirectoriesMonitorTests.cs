@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -51,6 +51,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Changed: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+
+            string[] expectedContentLines = [filePath];
+            await OutputFilesChecker.CheckChangesFile(now, "ChangedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -87,6 +90,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
 
             string expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+
+            string[] expectedContentLines = [filePath];
+            await OutputFilesChecker.CheckChangesFile(now, "CreatedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -126,6 +132,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Deleted: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+
+            string[] expectedContentLines = [filePath];
+            await OutputFilesChecker.CheckChangesFile(now, "DeletedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -166,6 +175,9 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 $"[{now}] Created: {oldFilePath}{Environment.NewLine}" +
                 $"[{now}] Renamed: {oldFilePath} to {newFilePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+
+            string[] expectedContentLines = [$"{oldFilePath} -> {newFilePath}"];
+            await OutputFilesChecker.CheckChangesFile(now, "RenamedFiles", expectedContentLines);
         }
 
         [TestMethod]
