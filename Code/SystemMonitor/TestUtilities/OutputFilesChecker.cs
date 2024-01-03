@@ -8,13 +8,22 @@ namespace SystemMonitor.TestUtilities
 {
     public static class OutputFilesChecker
     {
-        public static async Task CheckEventsFileAsync(DateTime now, string content)
+        public static async Task CheckEventsFileAsync(DateTime now, string expectedContent)
         {
-            string filePath = Path.Combine(now.ToDirectoryName(), "Events.txt");
+            try
+            {
+                string filePath = Path.Combine(now.ToDirectoryName(), "Events.txt");
 
-            File.Exists(filePath).Should().BeTrue();
+                File.Exists(filePath).Should().BeTrue();
 
-            (await File.ReadAllTextAsync(filePath)).Should().Be(content);
+                (await File.ReadAllTextAsync(filePath)).Should().Be(expectedContent);
+            }
+            catch (IOException e) when (
+                e.Message.StartsWith(
+                    "The process cannot access the file", StringComparison.Ordinal))
+            {
+                await CheckEventsFileAsync(now, expectedContent);
+            }
         }
     }
 }
