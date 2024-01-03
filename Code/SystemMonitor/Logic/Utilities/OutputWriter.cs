@@ -28,6 +28,11 @@ namespace SystemMonitor.Logic.Utilities
 
         public void WriteChangedFile(string filePath)
         {
+            if (this.IsOutputFile(filePath))
+            {
+                return;
+            }
+
             string message = this.FormatMessage($"Changed: {filePath}");
 
             Console.WriteLine(message);
@@ -37,6 +42,11 @@ namespace SystemMonitor.Logic.Utilities
 
         public void WriteCreatedFile(string filePath)
         {
+            if (this.IsOutputFile(filePath))
+            {
+                return;
+            }
+
             string message = this.FormatMessage($"Created: {filePath}");
 
             Console.WriteLine(message);
@@ -69,6 +79,11 @@ namespace SystemMonitor.Logic.Utilities
             Console.WriteLine(message);
 
             this.AppendToEventsFile(message);
+        }
+
+        private bool IsOutputFile(string filePath)
+        {
+            return filePath.StartsWith(this.OutputDirectory);
         }
 
         private string FormatMessage(string message)
