@@ -1,13 +1,15 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic.Utilities
 {
-    public class DirectoriesMonitor(OutputWriter outputWriter, CancellationToken cancellationToken)
+    public class DirectoriesMonitor(
+        IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
     {
-        public async Task MonitorAsync(string directory)
+        public async Task MonitorAsync(string directory, string outputDirectory)
         {
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
@@ -16,11 +18,13 @@ namespace SystemMonitor.Logic.Utilities
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
 
-            fileSystemWatcher.Changed += this.OnChanged;
-            fileSystemWatcher.Created += this.OnCreated;
-            fileSystemWatcher.Deleted += this.OnDeleted;
-            fileSystemWatcher.Renamed += this.OnRenamed;
-            fileSystemWatcher.Error += this.OnError;
+            OutputWriter outputWriter = new OutputWriter(outputDirectory, dateTimeProvider);
+
+            fileSystemWatcher.Changed += OnChanged(outputWriter);
+            fileSystemWatcher.Created += OnCreated(outputWriter);
+            fileSystemWatcher.Deleted += OnDeleted(outputWriter);
+            fileSystemWatcher.Renamed += OnRenamed(outputWriter);
+            fileSystemWatcher.Error += OnError(outputWriter);
 
             try
             {
@@ -35,29 +39,44 @@ namespace SystemMonitor.Logic.Utilities
             }
         }
 
-        private void OnChanged(object sender, FileSystemEventArgs e)
+        private static FileSystemEventHandler OnChanged(OutputWriter outputWriter)
         {
-            outputWriter.WriteChangedFile(e.FullPath);
+            return (object sender, FileSystemEventArgs e) =>
+            {
+                outputWriter.WriteChangedFile(e.FullPath);
+            };
         }
 
-        private void OnCreated(object sender, FileSystemEventArgs e)
+        private static FileSystemEventHandler OnCreated(OutputWriter outputWriter)
         {
-            outputWriter.WriteCreatedFile(e.FullPath);
+            return (object sender, FileSystemEventArgs e) =>
+            {
+                outputWriter.WriteCreatedFile(e.FullPath);
+            };
         }
 
-        private void OnDeleted(object sender, FileSystemEventArgs e)
+        private static FileSystemEventHandler OnDeleted(OutputWriter outputWriter)
         {
-            outputWriter.WriteDeletedFile(e.FullPath);
+            return (object sender, FileSystemEventArgs e) =>
+            {
+                outputWriter.WriteDeletedFile(e.FullPath);
+            };
         }
 
-        private void OnRenamed(object sender, RenamedEventArgs e)
+        private static RenamedEventHandler OnRenamed(OutputWriter outputWriter)
         {
-            outputWriter.WriteRenamedFile(e.OldFullPath, e.FullPath);
+            return (object sender, RenamedEventArgs e) =>
+            {
+                outputWriter.WriteRenamedFile(e.OldFullPath, e.FullPath);
+            };
         }
 
-        private void OnError(object sender, ErrorEventArgs e)
+        private static ErrorEventHandler OnError(OutputWriter outputWriter)
         {
-            outputWriter.WriteError(e.GetException().Message);
+            return (object sender, ErrorEventArgs e) =>
+            {
+                outputWriter.WriteError(e.GetException().Message);
+            };
         }
     }
 }

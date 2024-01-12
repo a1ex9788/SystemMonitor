@@ -53,10 +53,11 @@ namespace SystemMonitor.Tests.IntegrationTests
             cancellationTokenSource.Cancel();
             await task;
 
+            string outputDirectory = Path.Combine(now.ToDirectoryName());
             string expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Changed: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
         }
 
         [TestMethod]

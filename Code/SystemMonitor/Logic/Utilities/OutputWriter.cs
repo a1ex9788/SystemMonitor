@@ -19,13 +19,12 @@ namespace SystemMonitor.Logic.Utilities
         private readonly string deletedFilesFile;
         private readonly string renamedFilesFile;
 
-        public OutputWriter(IDateTimeProvider dateTimeProvider)
+        public OutputWriter(string outputDirectory, IDateTimeProvider dateTimeProvider)
         {
             this.dateTimeProvider = dateTimeProvider;
             this.file = new FileSystem().File;
 
-            string formattedData = dateTimeProvider.GetCurrentDateTime().ToDirectoryName();
-            this.outputDirectory = Path.Combine(Directory.GetCurrentDirectory(), formattedData);
+            this.outputDirectory = outputDirectory;
             Directory.CreateDirectory(this.outputDirectory);
 
             this.fileChangesDirectory = Path.Combine(this.outputDirectory, "FileChanges");

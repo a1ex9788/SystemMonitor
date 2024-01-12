@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.TestUtilities
 {
     public static class OutputFilesChecker
     {
-        public static async Task CheckEventsFileAsync(DateTime now, string expectedContent)
+        public static async Task CheckEventsFileAsync(
+            string outputDirectory, string expectedContent)
         {
             try
             {
-                string filePath = Path.Combine(now.ToDirectoryName(), "Events.txt");
+                string filePath = Path.Combine(outputDirectory, "Events.txt");
 
                 File.Exists(filePath).Should().BeTrue();
 
@@ -24,15 +24,17 @@ namespace SystemMonitor.TestUtilities
                 e.Message.StartsWith(
                     "The process cannot access the file", StringComparison.Ordinal))
             {
-                await CheckEventsFileAsync(now, expectedContent);
+                await CheckEventsFileAsync(outputDirectory, expectedContent);
             }
         }
 
         public static async Task CheckChangesFile(
-            DateTime now, string changesFileName, IEnumerable<string> expectedContentLines)
+            string outputDirectory,
+            string changesFileName,
+            IEnumerable<string> expectedContentLines)
         {
             string filePath = Path.Combine(
-                now.ToDirectoryName(), "FileChanges", $"{changesFileName}.txt");
+                outputDirectory, "FileChanges", $"{changesFileName}.txt");
 
             File.Exists(filePath).Should().BeTrue();
 

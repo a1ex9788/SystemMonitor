@@ -19,6 +19,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -31,7 +32,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -50,10 +51,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             string expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Changed: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
-            await OutputFilesChecker.CheckChangesFile(now, "ChangedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(
+                outputDirectory, "ChangedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -61,6 +63,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -73,7 +76,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -89,10 +92,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             await task;
 
             string expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
-            await OutputFilesChecker.CheckChangesFile(now, "CreatedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(
+                outputDirectory, "CreatedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -100,6 +104,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -112,7 +117,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -131,10 +136,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             string expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Deleted: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
-            await OutputFilesChecker.CheckChangesFile(now, "DeletedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(
+                outputDirectory, "DeletedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -142,6 +148,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -154,7 +161,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -174,10 +181,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             string expectedContent =
                 $"[{now}] Created: {oldFilePath}{Environment.NewLine}" +
                 $"[{now}] Renamed: {oldFilePath} to {newFilePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [$"{oldFilePath} -> {newFilePath}"];
-            await OutputFilesChecker.CheckChangesFile(now, "RenamedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(
+                outputDirectory, "RenamedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -185,6 +193,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = Directory.GetCurrentDirectory();
+            string outputDirectory = TempPathsObtainer.GetTempDirectory();
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -197,7 +206,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -219,7 +228,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             string expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Changed: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(now, expectedContent);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
         }
     }
 }
