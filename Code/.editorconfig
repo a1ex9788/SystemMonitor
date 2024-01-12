@@ -1,6 +1,20 @@
 [*]
+charset = utf-8
+indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = false
+end_of_line = CRLF
+
 # Editor Guidelines VS extension.
 guidelines = 100
+
+[*.{csproj,props,targets}]
+indent_size = 2
+tab_with = 2
+
+[*.{cs,ps1}]
+indent_size = 4
+tab_with = 4
 
 [*.cs]
 dotnet_style_qualification_for_field = true:error
