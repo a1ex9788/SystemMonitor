@@ -19,9 +19,18 @@ namespace SystemMonitor.Logic
             {
                 List<Task> tasks = [];
 
-                foreach (string drive in DrivesObtainer.GetDrives())
+                string generalEventsFile = Path.Combine(
+                    outputDirectory, OutputWriter.EventsFileName);
+
+                foreach (DriveInfo driveInfo in DrivesObtainer.GetDrives())
                 {
-                    tasks.Add(directoriesMonitor.MonitorAsync(drive, outputDirectory));
+                    string driveOutputDirectory = Path.Combine(
+                        outputDirectory, driveInfo.VolumeLabel);
+
+                    Task task = directoriesMonitor.MonitorAsync(
+                        driveInfo.RootDirectory.FullName, driveOutputDirectory, generalEventsFile);
+
+                    tasks.Add(task);
                 }
 
                 return Task.WhenAll(tasks);

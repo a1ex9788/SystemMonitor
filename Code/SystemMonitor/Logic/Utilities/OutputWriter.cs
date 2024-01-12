@@ -12,6 +12,7 @@ namespace SystemMonitor.Logic.Utilities
 
         private readonly string outputDirectory;
         private readonly string fileChangesDirectory;
+        private readonly string? generalEventsFile;
         private readonly string eventsFile;
         private readonly string allFileChangesFile;
         private readonly string changedFilesFile;
@@ -19,7 +20,12 @@ namespace SystemMonitor.Logic.Utilities
         private readonly string deletedFilesFile;
         private readonly string renamedFilesFile;
 
-        public OutputWriter(string outputDirectory, IDateTimeProvider dateTimeProvider)
+        public static readonly string EventsFileName = "Events.txt";
+
+        public OutputWriter(
+            string outputDirectory,
+            IDateTimeProvider dateTimeProvider,
+            string? generalEventsFile = null)
         {
             this.dateTimeProvider = dateTimeProvider;
             this.file = new FileSystem().File;
@@ -30,7 +36,8 @@ namespace SystemMonitor.Logic.Utilities
             this.fileChangesDirectory = Path.Combine(this.outputDirectory, "FileChanges");
             Directory.CreateDirectory(this.fileChangesDirectory);
 
-            this.eventsFile = Path.Combine(this.outputDirectory, "Events.txt");
+            this.generalEventsFile = generalEventsFile;
+            this.eventsFile = Path.Combine(this.outputDirectory, EventsFileName);
             this.allFileChangesFile = Path.Combine(this.fileChangesDirectory, "AllFileChanges.txt");
             this.changedFilesFile = Path.Combine(this.fileChangesDirectory, "ChangedFiles.txt");
             this.createdFilesFile = Path.Combine(this.fileChangesDirectory, "CreatedFiles.txt");
@@ -49,8 +56,8 @@ namespace SystemMonitor.Logic.Utilities
 
             Console.WriteLine(message);
 
+            this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-
             this.AddFilePathToChangesFile(this.changedFilesFile, filePath);
         }
 
@@ -65,8 +72,8 @@ namespace SystemMonitor.Logic.Utilities
 
             Console.WriteLine(message);
 
+            this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-
             this.AddFilePathToChangesFile(this.createdFilesFile, filePath);
         }
 
@@ -76,8 +83,8 @@ namespace SystemMonitor.Logic.Utilities
 
             Console.WriteLine(message);
 
+            this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-
             this.AddFilePathToChangesFile(this.deletedFilesFile, filePath);
         }
 
@@ -87,8 +94,8 @@ namespace SystemMonitor.Logic.Utilities
 
             Console.WriteLine(message);
 
+            this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-
             this.AddFilePathToChangesFile(this.renamedFilesFile, $"{oldFilePath} -> {newFilePath}");
         }
 
@@ -98,6 +105,7 @@ namespace SystemMonitor.Logic.Utilities
 
             Console.WriteLine(message);
 
+            this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
         }
 
@@ -109,6 +117,18 @@ namespace SystemMonitor.Logic.Utilities
         private string FormatMessage(string message)
         {
             return $"[{this.dateTimeProvider.GetCurrentDateTime()}] {message}";
+        }
+
+        private void AppendToGeneralEventsFileIfNeeded(string message)
+        {
+            if (this.generalEventsFile is null)
+            {
+                return;
+            }
+
+            message += Environment.NewLine;
+
+            this.file.AppendAllText(this.generalEventsFile, message);
         }
 
         private void AppendToEventsFile(string message)

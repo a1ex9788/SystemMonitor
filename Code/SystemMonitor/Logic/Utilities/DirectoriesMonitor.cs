@@ -9,7 +9,8 @@ namespace SystemMonitor.Logic.Utilities
     public class DirectoriesMonitor(
         IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
     {
-        public async Task MonitorAsync(string directory, string outputDirectory)
+        public async Task MonitorAsync(
+            string directory, string outputDirectory, string? generalEventsFile = null)
         {
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
@@ -18,7 +19,8 @@ namespace SystemMonitor.Logic.Utilities
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
 
-            OutputWriter outputWriter = new OutputWriter(outputDirectory, dateTimeProvider);
+            OutputWriter outputWriter = new OutputWriter(
+                outputDirectory, dateTimeProvider, generalEventsFile);
 
             fileSystemWatcher.Changed += OnChanged(outputWriter);
             fileSystemWatcher.Created += OnCreated(outputWriter);
