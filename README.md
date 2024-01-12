@@ -47,4 +47,4 @@ The application creates subscriptions to system events to be notified of changes
 
 Option|Description
 -|-
--f directory|The directory to monitor. The whole file system is monitored if it is not specified.
+-d directory|The directory to monitor. The whole file system is monitored if it is not specified.
