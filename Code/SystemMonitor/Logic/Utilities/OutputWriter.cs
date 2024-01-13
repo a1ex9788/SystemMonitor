@@ -38,7 +38,7 @@ namespace SystemMonitor.Logic.Utilities
 
             this.generalEventsFile = generalEventsFile;
             this.eventsFile = Path.Combine(this.outputDirectory, EventsFileName);
-            this.allFileChangesFile = Path.Combine(this.fileChangesDirectory, "AllFileChanges.txt");
+            this.allFileChangesFile = Path.Combine(this.outputDirectory, "AllFileChanges.txt");
             this.changedFilesFile = Path.Combine(this.fileChangesDirectory, "ChangedFiles.txt");
             this.createdFilesFile = Path.Combine(this.fileChangesDirectory, "CreatedFiles.txt");
             this.deletedFilesFile = Path.Combine(this.fileChangesDirectory, "DeletedFiles.txt");

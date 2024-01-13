@@ -49,8 +49,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             await task;
 
             string expectedContent = $"{filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckAllFileChangesFileAsync(
-                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(outputDirectory, expectedContent);
 
             expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
@@ -98,8 +97,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             await Task.Delay(10);
 
             string expectedContent = $"{filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckAllFileChangesFileAsync(
-                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(outputDirectory, expectedContent);
 
             expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
@@ -144,8 +142,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             await task;
 
             string expectedContent = $"{filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckAllFileChangesFileAsync(
-                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(outputDirectory, expectedContent);
 
             expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
@@ -196,8 +193,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             string expectedContent =
                 $"{oldFilePath}{Environment.NewLine}" +
                 $"{renaming}{Environment.NewLine}";
-            await OutputFilesChecker.CheckAllFileChangesFileAsync(
-                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(outputDirectory, expectedContent);
 
             expectedContent =
                 $"[{now}] Created: {oldFilePath}{Environment.NewLine}" +
