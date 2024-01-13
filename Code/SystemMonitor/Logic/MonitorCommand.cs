@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using SystemMonitor.Logic.Utilities;
@@ -19,6 +19,9 @@ namespace SystemMonitor.Logic
             {
                 List<Task> tasks = [];
 
+                string generalAllFileChangesFile = Path.Combine(
+                    outputDirectory, OutputWriter.AllFileChangesFileName);
+
                 string generalEventsFile = Path.Combine(
                     outputDirectory, OutputWriter.EventsFileName);
 
@@ -28,7 +31,10 @@ namespace SystemMonitor.Logic
                         outputDirectory, driveInfo.VolumeLabel);
 
                     Task task = directoriesMonitor.MonitorAsync(
-                        driveInfo.RootDirectory.FullName, driveOutputDirectory, generalEventsFile);
+                        driveInfo.RootDirectory.FullName,
+                        driveOutputDirectory,
+                        generalAllFileChangesFile,
+                        generalEventsFile);
 
                     tasks.Add(task);
                 }

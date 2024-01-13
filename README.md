@@ -16,7 +16,6 @@ If all the directories of the file system are monitored, the output of the comma
 - `Starting date and time`
   - `Drive1`
     - `FileChanges`
-      - `AllFileChanges.txt`: all files that were changed, created, deleted or renamed on Drive1.
       - `ChangedFiles.txt`: files that were changed on Drive1.
       - `CreatedFiles.txt`: files that were created on Drive1.
       - `DeletedFiles.txt`: files that were deleted on Drive1.
@@ -25,6 +24,7 @@ If all the directories of the file system are monitored, the output of the comma
     - `Events.txt`: all monitored changes on Drive1 by time.
   - `Drive2`
   - ...
+  - `AllFileChanges.txt`: all files that were changed, created, deleted or renamed on all drives.
   - `Events.txt`: all monitored changes on all drives by time.
 
 In case a specific directory is monitored:

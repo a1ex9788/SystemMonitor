@@ -56,7 +56,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests
             await task;
 
             string outputDirectory = now.ToDirectoryName();
-            string expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
+            string expectedContent = $"{filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(
+                outputDirectory, expectedContent, exactContent: false);
+
+            expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(
                 outputDirectory, expectedContent, exactContent: false);
 
