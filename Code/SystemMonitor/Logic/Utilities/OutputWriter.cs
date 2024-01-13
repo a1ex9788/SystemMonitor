@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Abstractions;
 using SystemMonitor.Logic.Utilities.DateTimes;
@@ -58,6 +58,7 @@ namespace SystemMonitor.Logic.Utilities
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
+            this.AddFilePathToChangesFile(this.allFileChangesFile, filePath);
             this.AddFilePathToChangesFile(this.changedFilesFile, filePath);
         }
 
@@ -74,6 +75,7 @@ namespace SystemMonitor.Logic.Utilities
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
+            this.AddFilePathToChangesFile(this.allFileChangesFile, filePath);
             this.AddFilePathToChangesFile(this.createdFilesFile, filePath);
         }
 
@@ -85,6 +87,7 @@ namespace SystemMonitor.Logic.Utilities
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
+            this.AddFilePathToChangesFile(this.allFileChangesFile, filePath);
             this.AddFilePathToChangesFile(this.deletedFilesFile, filePath);
         }
 
@@ -96,7 +99,10 @@ namespace SystemMonitor.Logic.Utilities
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-            this.AddFilePathToChangesFile(this.renamedFilesFile, $"{oldFilePath} -> {newFilePath}");
+
+            string renaming = $"{oldFilePath} -> {newFilePath}";
+            this.AddFilePathToChangesFile(this.allFileChangesFile, renaming);
+            this.AddFilePathToChangesFile(this.renamedFilesFile, renaming);
         }
 
         public void WriteError(string error)

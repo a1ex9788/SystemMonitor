@@ -48,7 +48,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             cancellationTokenSource.Cancel();
             await task;
 
-            string expectedContent =
+            string expectedContent = $"{filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(
+                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+
+            expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Changed: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
@@ -91,7 +95,13 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             cancellationTokenSource.Cancel();
             await task;
 
-            string expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
+            await Task.Delay(10);
+
+            string expectedContent = $"{filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(
+                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+
+            expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
@@ -133,7 +143,11 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             cancellationTokenSource.Cancel();
             await task;
 
-            string expectedContent =
+            string expectedContent = $"{filePath}{Environment.NewLine}";
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(
+                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+
+            expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Deleted: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
@@ -178,12 +192,19 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             cancellationTokenSource.Cancel();
             await task;
 
+            string renaming = $"{oldFilePath} -> {newFilePath}";
             string expectedContent =
+                $"{oldFilePath}{Environment.NewLine}" +
+                $"{renaming}{Environment.NewLine}";
+            await OutputFilesChecker.CheckAllFileChangesFileAsync(
+                Path.Combine(outputDirectory, "FileChanges"), expectedContent);
+
+            expectedContent =
                 $"[{now}] Created: {oldFilePath}{Environment.NewLine}" +
                 $"[{now}] Renamed: {oldFilePath} to {newFilePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
-            string[] expectedContentLines = [$"{oldFilePath} -> {newFilePath}"];
+            string[] expectedContentLines = [renaming];
             await OutputFilesChecker.CheckChangesFile(
                 outputDirectory, "RenamedFiles", expectedContentLines);
         }
