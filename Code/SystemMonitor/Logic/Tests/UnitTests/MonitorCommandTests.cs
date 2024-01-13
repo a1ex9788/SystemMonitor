@@ -110,5 +110,46 @@ namespace SystemMonitor.Logic.Tests.UnitTests
             cancellationTokenSource.Cancel();
             await task;
         }
+
+        [TestMethod]
+        public async Task ExecuteAsync_DirectoryNotSpecified_OutputFileChangesAreNotAnalysed()
+        {
+            // Arrange.
+            string testDirectory = TempPathsObtainer.GetTempDirectory();
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token);
+            IMonitorCommand monitorCommand = serviceProvider
+                .GetRequiredService<IMonitorCommand>();
+
+            // Act.
+            Task task = monitorCommand.ExecuteAsync(directory: null);
+
+            await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
+
+            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
+            await File.Create(filePath).DisposeAsync();
+
+            // Assert.
+            await EventsWaiter.WaitForEventsProsecutionAsync(
+                stringWriter, expectedCreatedFiles: [filePath]);
+
+            IEnumerable<DriveInfo> drives = DrivesObtainer.GetDrives();
+
+            foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
+            {
+                stringWriter.ToString().Should().Contain($"Monitoring directory '{drive}'...");
+            }
+
+            cancellationTokenSource.Cancel();
+            await task;
+
+            stringWriter.ToString().Should().NotContain("AllFileChanges.txt");
+            stringWriter.ToString().Should().NotContain("Events.txt");
+        }
     }
 }

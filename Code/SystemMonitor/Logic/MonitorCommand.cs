@@ -32,6 +32,7 @@ namespace SystemMonitor.Logic
 
                     Task task = directoriesMonitor.MonitorAsync(
                         driveInfo.RootDirectory.FullName,
+                        baseOutputDirectory: outputDirectory,
                         driveOutputDirectory,
                         generalAllFileChangesFile,
                         generalEventsFile);
@@ -42,7 +43,8 @@ namespace SystemMonitor.Logic
                 return Task.WhenAll(tasks);
             }
 
-            return directoriesMonitor.MonitorAsync(directory, outputDirectory);
+            return directoriesMonitor.MonitorAsync(
+                directory, baseOutputDirectory: outputDirectory, outputDirectory);
         }
     }
 }

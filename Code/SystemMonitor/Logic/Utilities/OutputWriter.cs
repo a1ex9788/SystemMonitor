@@ -10,7 +10,7 @@ namespace SystemMonitor.Logic.Utilities
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IFile file;
 
-        private readonly string outputDirectory;
+        private readonly string baseOutputDirectory;
         private readonly string fileChangesDirectory;
         private readonly string? generalAllFileChangesFile;
         private readonly string? generalEventsFile;
@@ -25,6 +25,7 @@ namespace SystemMonitor.Logic.Utilities
         public static readonly string EventsFileName = "Events.txt";
 
         public OutputWriter(
+            string baseOutputDirectory,
             string outputDirectory,
             IDateTimeProvider dateTimeProvider,
             string? generalAllFileChangesFile = null,
@@ -33,16 +34,16 @@ namespace SystemMonitor.Logic.Utilities
             this.dateTimeProvider = dateTimeProvider;
             this.file = new FileSystem().File;
 
-            this.outputDirectory = outputDirectory;
-            Directory.CreateDirectory(this.outputDirectory);
+            this.baseOutputDirectory = baseOutputDirectory;
+            Directory.CreateDirectory(outputDirectory);
 
-            this.fileChangesDirectory = Path.Combine(this.outputDirectory, "FileChanges");
+            this.fileChangesDirectory = Path.Combine(outputDirectory, "FileChanges");
             Directory.CreateDirectory(this.fileChangesDirectory);
 
             this.generalAllFileChangesFile = generalAllFileChangesFile;
             this.generalEventsFile = generalEventsFile;
-            this.eventsFile = Path.Combine(this.outputDirectory, EventsFileName);
-            this.allFileChangesFile = Path.Combine(this.outputDirectory, "AllFileChanges.txt");
+            this.eventsFile = Path.Combine(outputDirectory, EventsFileName);
+            this.allFileChangesFile = Path.Combine(outputDirectory, "AllFileChanges.txt");
             this.changedFilesFile = Path.Combine(this.fileChangesDirectory, "ChangedFiles.txt");
             this.createdFilesFile = Path.Combine(this.fileChangesDirectory, "CreatedFiles.txt");
             this.deletedFilesFile = Path.Combine(this.fileChangesDirectory, "DeletedFiles.txt");
@@ -125,7 +126,7 @@ namespace SystemMonitor.Logic.Utilities
 
         private bool IsOutputFile(string filePath)
         {
-            return filePath.StartsWith(this.outputDirectory);
+            return filePath.StartsWith(this.baseOutputDirectory);
         }
 
         private string FormatMessage(string message)

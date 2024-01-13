@@ -11,6 +11,7 @@ namespace SystemMonitor.Logic.Utilities
     {
         public async Task MonitorAsync(
             string directory,
+            string baseOutputDirectory,
             string outputDirectory,
             string? generalAllFileChangesFile = null,
             string? generalEventsFile = null)
@@ -23,7 +24,11 @@ namespace SystemMonitor.Logic.Utilities
             fileSystemWatcher.IncludeSubdirectories = true;
 
             OutputWriter outputWriter = new OutputWriter(
-                outputDirectory, dateTimeProvider, generalAllFileChangesFile, generalEventsFile);
+                baseOutputDirectory,
+                outputDirectory,
+                dateTimeProvider,
+                generalAllFileChangesFile,
+                generalEventsFile);
 
             fileSystemWatcher.Changed += OnChanged(outputWriter);
             fileSystemWatcher.Created += OnCreated(outputWriter);

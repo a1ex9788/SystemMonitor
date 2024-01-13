@@ -19,7 +19,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
-            string outputDirectory = TempPathsObtainer.GetTempDirectory();
+            string baseOutputDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = baseOutputDirectory;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -32,7 +33,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(
+                testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -66,7 +68,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
-            string outputDirectory = TempPathsObtainer.GetTempDirectory();
+            string baseOutputDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = baseOutputDirectory;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -79,7 +82,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(
+                testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -112,7 +116,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
-            string outputDirectory = TempPathsObtainer.GetTempDirectory();
+            string baseOutputDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = baseOutputDirectory;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -125,7 +130,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(
+                testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -159,7 +165,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
-            string outputDirectory = TempPathsObtainer.GetTempDirectory();
+            string baseOutputDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = baseOutputDirectory;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -172,7 +179,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(
+                testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -210,7 +218,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
         {
             // Arrange.
             string testDirectory = Directory.GetCurrentDirectory();
-            string outputDirectory = TempPathsObtainer.GetTempDirectory();
+            string baseOutputDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = baseOutputDirectory;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -223,7 +232,8 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
                 .GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(testDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(
+                testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -240,6 +250,7 @@ namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
             cancellationTokenSource.Cancel();
             await task;
 
+            stringWriter.ToString().Should().NotContain("AllFileChanges.txt");
             stringWriter.ToString().Should().NotContain("Events.txt");
 
             string expectedContent =
