@@ -13,14 +13,14 @@ namespace SystemMonitor.Logic
         {
             if (directory is null)
             {
-                return this.MonitorAllDrives();
+                return this.MonitorAllDrivesAsync();
             }
 
             return directoriesMonitor.MonitorAsync(
                 directory, baseOutputDirectory: outputDirectory.Path, outputDirectory.Path);
         }
 
-        private Task MonitorAllDrives()
+        private Task MonitorAllDrivesAsync()
         {
             List<Task> tasks = [];
 
