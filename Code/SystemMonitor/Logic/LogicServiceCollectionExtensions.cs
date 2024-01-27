@@ -13,6 +13,8 @@ namespace SystemMonitor.Logic
             services.AddScoped<DirectoriesMonitor>();
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
+            services.AddSingleton<OutputDirectory>();
+
             return services;
         }
     }

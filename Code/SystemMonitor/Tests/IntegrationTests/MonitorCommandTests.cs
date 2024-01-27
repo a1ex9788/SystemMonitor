@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -153,6 +153,39 @@ namespace SystemMonitor.Tests.IntegrationTests
             string expectedOutput =
                $"Specify --help for a list of available options and commands.{Environment.NewLine}";
             stringWriter.ToString().Should().Be(expectedOutput);
+        }
+
+        [TestMethod]
+        public async Task MonitorCommand_UnexpectedError_SavesError()
+        {
+            // Arrange.
+            string[] args = [];
+
+            IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
+            monitorCommand
+                .ExecuteAsync(Arg.Any<string?>())
+                .Returns(x =>
+                {
+                    throw new Exception("Test exception.");
+                });
+
+            MonitorCommandServiceProvider.ExtraRegistrationsAction =
+                sc => sc.AddSingleton(monitorCommand);
+
+            // Act.
+            Action action = () => Program.Main(args);
+
+            // Assert.
+            action.Should().NotThrow();
+
+            string expectedErrorsFile = "Errors.txt";
+            string method = "SystemMonitor.Tests.IntegrationTests.MonitorCommandTests.<>c" +
+                ".<MonitorCommand_UnexpectedError_SavesError>b__4_0(CallInfo x)";
+            string expectedContent =
+               $"System.Exception: Test exception.{Environment.NewLine}" +
+               $"   at {method}";
+            await OutputFilesChecker.CheckFile(
+                expectedErrorsFile, expectedContent, exactContent: false);
         }
     }
 }

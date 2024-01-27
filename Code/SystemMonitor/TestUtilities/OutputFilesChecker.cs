@@ -14,18 +14,7 @@ namespace SystemMonitor.TestUtilities
         {
             string filePath = Path.Combine(outputDirectory, "AllFileChanges.txt");
 
-            File.Exists(filePath).Should().BeTrue();
-
-            string content = await File.ReadAllTextAsync(filePath);
-
-            if (exactContent)
-            {
-                content.Should().Be(expectedContent);
-            }
-            else
-            {
-                content.Should().Contain(expectedContent);
-            }
+            await CheckFile(filePath, expectedContent, exactContent);
         }
 
         public static async Task CheckEventsFileAsync(
@@ -35,18 +24,7 @@ namespace SystemMonitor.TestUtilities
             {
                 string filePath = Path.Combine(outputDirectory, "Events.txt");
 
-                File.Exists(filePath).Should().BeTrue();
-
-                string content = await File.ReadAllTextAsync(filePath);
-
-                if (exactContent)
-                {
-                    content.Should().Be(expectedContent);
-                }
-                else
-                {
-                    content.Should().Contain(expectedContent);
-                }
+                await CheckFile(filePath, expectedContent, exactContent);
             }
             catch (IOException e) when (
                 e.Message.StartsWith(
@@ -64,8 +42,6 @@ namespace SystemMonitor.TestUtilities
             string filePath = Path.Combine(
                 outputDirectory, "FileChanges", $"{changesFileName}.txt");
 
-            File.Exists(filePath).Should().BeTrue();
-
             StringBuilder stringBuilder = new StringBuilder();
 
             foreach (string line in expectedContentLines)
@@ -73,7 +49,24 @@ namespace SystemMonitor.TestUtilities
                 stringBuilder.AppendLine(line);
             }
 
-            (await File.ReadAllTextAsync(filePath)).Should().Be(stringBuilder.ToString());
+            await CheckFile(filePath, stringBuilder.ToString());
+        }
+
+        public static async Task CheckFile(
+            string filePath, string expectedContent, bool exactContent = true)
+        {
+            File.Exists(filePath).Should().BeTrue();
+
+            string content = await File.ReadAllTextAsync(filePath);
+
+            if (exactContent)
+            {
+                content.Should().Be(expectedContent);
+            }
+            else
+            {
+                content.Should().Contain(expectedContent);
+            }
         }
     }
 }

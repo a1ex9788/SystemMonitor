@@ -1,4 +1,4 @@
-﻿using McMaster.Extensions.CommandLineUtils;
+using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using SystemMonitor.Logic;
@@ -22,9 +22,11 @@ namespace SystemMonitor
 
                 return commandLineApplication.Execute(args);
             }
-            catch
+            catch (Exception e)
             {
                 Console.Error.WriteLine("An unexpected error was produced.");
+
+                new ProgramErrorsLogger().LogError(e);
 
                 return -1;
             }

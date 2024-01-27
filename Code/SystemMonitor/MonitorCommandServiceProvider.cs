@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO.Abstractions;
 using System.Threading;
 using SystemMonitor.Logic;
 
@@ -12,11 +13,14 @@ namespace SystemMonitor
         // Hook for tests.
         internal static Action<IServiceCollection>? ExtraRegistrationsAction;
 
-        internal MonitorCommandServiceProvider(CancellationToken cancellationToken)
+        internal MonitorCommandServiceProvider(CancellationToken? cancellationToken = null)
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton(typeof(CancellationToken), cancellationToken);
+            if (cancellationToken is not null)
+            {
+                services.AddSingleton(typeof(CancellationToken), cancellationToken);
+            }
 
             ConfigureServices(services);
 
@@ -33,6 +37,8 @@ namespace SystemMonitor
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddSystemMonitorLogic();
+
+            services.AddSingleton(new FileSystem().File);
         }
     }
 }
