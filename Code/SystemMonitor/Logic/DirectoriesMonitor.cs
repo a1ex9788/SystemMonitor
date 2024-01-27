@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic.Utilities.DateTimes;
 
-namespace SystemMonitor.Logic.Utilities
+namespace SystemMonitor.Logic
 {
     public class DirectoriesMonitor(
         IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)

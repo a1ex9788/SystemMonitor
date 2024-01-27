@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SystemMonitor.TestUtilities
+namespace SystemMonitor.Tests.Utilities
 {
     public static class RandomDateTimeGenerator
     {

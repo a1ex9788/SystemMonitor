@@ -3,6 +3,7 @@ using System;
 using System.IO.Abstractions;
 using System.Threading;
 using SystemMonitor.Logic;
+using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor
 {
@@ -36,8 +37,11 @@ namespace SystemMonitor
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddSystemMonitorLogic();
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<IMonitorCommand, MonitorCommand>();
+            services.AddScoped<DirectoriesMonitor>();
 
+            services.AddSingleton<OutputDirectory>();
             services.AddSingleton(new FileSystem().File);
         }
     }

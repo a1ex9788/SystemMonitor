@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>SystemMonitor.Tests</AssemblyName>
@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SystemMonitor.csproj" />
-    <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
   </ItemGroup>
 
 </Project>

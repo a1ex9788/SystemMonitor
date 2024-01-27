@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SystemMonitor.TestUtilities
+namespace SystemMonitor.Tests.Utilities
 {
     public class EventsWaiter
     {

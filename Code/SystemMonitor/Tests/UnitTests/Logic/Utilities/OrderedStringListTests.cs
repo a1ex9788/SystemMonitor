@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SystemMonitor.Logic.Utilities;
 
-namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
+namespace SystemMonitor.Tests.UnitTests.Logic.Utilities
 {
     [TestClass]
     public class OrderedStringListTests

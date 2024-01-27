@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SystemMonitor.TestUtilities
+namespace SystemMonitor.Tests.Utilities
 {
     public class TempPathsObtainer
     {

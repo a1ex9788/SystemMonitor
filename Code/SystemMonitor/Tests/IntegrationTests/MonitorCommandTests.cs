@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
 using SystemMonitor.Logic.Utilities.DateTimes;
-using SystemMonitor.TestUtilities;
+using SystemMonitor.Tests.Utilities;
 
 namespace SystemMonitor.Tests.IntegrationTests
 {

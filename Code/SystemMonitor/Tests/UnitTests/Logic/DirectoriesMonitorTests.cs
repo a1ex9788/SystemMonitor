@@ -5,11 +5,11 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using SystemMonitor.Logic.Tests.Utilities;
-using SystemMonitor.Logic.Utilities;
-using SystemMonitor.TestUtilities;
+using SystemMonitor.Logic;
+using SystemMonitor.Tests.Utilities;
+using SystemMonitor.Tests.Utilities.Logic;
 
-namespace SystemMonitor.Logic.Tests.UnitTests.Utilities
+namespace SystemMonitor.Tests.UnitTests.Logic
 {
     [TestClass]
     public class DirectoriesMonitorTests

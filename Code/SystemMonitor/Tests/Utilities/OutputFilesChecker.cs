@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SystemMonitor.TestUtilities
+namespace SystemMonitor.Tests.Utilities
 {
     public static class OutputFilesChecker
     {

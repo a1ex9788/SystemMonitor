@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>SystemMonitor</AssemblyName>
@@ -6,24 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Logic\**" />
     <Compile Remove="Tests\**" />
-    <Compile Remove="TestUtilities\**" />
-    <EmbeddedResource Remove="Logic\**" />
     <EmbeddedResource Remove="Tests\**" />
-    <EmbeddedResource Remove="TestUtilities\**" />
-    <None Remove="Logic\**" />
     <None Remove="Tests\**" />
-    <None Remove="TestUtilities\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="Logic\Logic.csproj" />
+    <PackageReference Include="System.IO.Abstractions" />
   </ItemGroup>
 
 </Project>

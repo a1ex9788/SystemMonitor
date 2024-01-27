@@ -7,12 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using SystemMonitor.Logic.Tests.Utilities;
+using SystemMonitor.Logic;
 using SystemMonitor.Logic.Utilities;
 using SystemMonitor.Logic.Utilities.DateTimes;
-using SystemMonitor.TestUtilities;
+using SystemMonitor.Tests.Utilities;
+using SystemMonitor.Tests.Utilities.Logic;
 
-namespace SystemMonitor.Logic.Tests.UnitTests
+namespace SystemMonitor.Tests.UnitTests.Logic
 {
     [TestClass]
     public class MonitorCommandTests
