@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace SystemMonitor.Tests.Utilities
 {
-    public class EventsWaiter
+    internal static class EventsWaiter
     {
         private static readonly TimeSpan EventsRegistrationMaxTime = TimeSpan.FromSeconds(1);
         private static readonly TimeSpan EventsProsecutionMaxTime = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan WaitingTimeBetweenRetries = TimeSpan.FromMilliseconds(100);
 
-        public static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
+        internal static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {
             await WaitForExpectedOutputAsync(
                 stringWriter,
@@ -22,7 +22,7 @@ namespace SystemMonitor.Tests.Utilities
                 EventsRegistrationMaxTime);
         }
 
-        public static async Task WaitForEventsProsecutionAsync(
+        internal static async Task WaitForEventsProsecutionAsync(
             StringWriter stringWriter,
             IEnumerable<string>? expectedChangedFiles = null,
             IEnumerable<string>? expectedCreatedFiles = null,

@@ -5,7 +5,7 @@ using SystemMonitor.Logic.Utilities;
 
 namespace SystemMonitor.Logic
 {
-    public class MonitorCommand(
+    internal class MonitorCommand(
         DirectoriesMonitor directoriesMonitor, OutputDirectory outputDirectory)
             : IMonitorCommand
     {

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace SystemMonitor.Logic
 {
-    public interface IMonitorCommand
+    internal interface IMonitorCommand
     {
-        Task ExecuteAsync(string? directory);
+        internal Task ExecuteAsync(string? directory);
     }
 }

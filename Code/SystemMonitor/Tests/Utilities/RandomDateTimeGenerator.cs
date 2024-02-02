@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
 namespace SystemMonitor.Tests.Utilities
 {
-    public static class RandomDateTimeGenerator
+    internal static class RandomDateTimeGenerator
     {
         private static readonly Random random = new Random();
 
-        public static DateTime Get()
+        internal static DateTime Get()
         {
             return DateTime.MinValue.AddDays(random.Next(0, 1000000));
         }

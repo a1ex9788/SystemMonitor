@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace SystemMonitor.Logic.Utilities.DateTimes
 {
-    public class DateTimeProvider : IDateTimeProvider
+    internal class DateTimeProvider : IDateTimeProvider
     {
         public DateTime GetCurrentDateTime()
         {

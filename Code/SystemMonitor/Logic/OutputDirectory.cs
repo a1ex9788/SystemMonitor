@@ -3,7 +3,7 @@ using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic
 {
-    public class OutputDirectory
+    internal class OutputDirectory
     {
         public OutputDirectory(IDateTimeProvider dateTimeProvider)
         {
@@ -12,6 +12,6 @@ namespace SystemMonitor.Logic
             this.Path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), formattedData);
         }
 
-        public string Path { get; }
+        internal string Path { get; }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace SystemMonitor.Tests.Utilities
 {
-    public class TempPathsObtainer
+    internal static class TempPathsObtainer
     {
-        public static string GetTempDirectory(string parentDirectory)
+        internal static string GetTempDirectory(string parentDirectory)
         {
             string tempDirectory = Path.Combine(parentDirectory, Guid.NewGuid().ToString());
 
@@ -14,17 +14,17 @@ namespace SystemMonitor.Tests.Utilities
             return tempDirectory;
         }
 
-        public static string GetTempDirectory()
+        internal static string GetTempDirectory()
         {
             return GetTempDirectory(Path.GetTempPath());
         }
 
-        public static string GetTempFile(string parentDirectory)
+        internal static string GetTempFile(string parentDirectory)
         {
             return Path.Combine(parentDirectory, Guid.NewGuid().ToString());
         }
 
-        public static string GetTempFile()
+        internal static string GetTempFile()
         {
             return Path.GetTempFileName();
         }

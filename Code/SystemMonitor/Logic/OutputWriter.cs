@@ -6,7 +6,7 @@ using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic
 {
-    public class OutputWriter
+    internal class OutputWriter
     {
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IFile file;
@@ -22,10 +22,10 @@ namespace SystemMonitor.Logic
         private readonly string deletedFilesFile;
         private readonly string renamedFilesFile;
 
-        public static readonly string AllFileChangesFileName = "AllFileChanges.txt";
-        public static readonly string EventsFileName = "Events.txt";
+        internal static readonly string AllFileChangesFileName = "AllFileChanges.txt";
+        internal static readonly string EventsFileName = "Events.txt";
 
-        public OutputWriter(
+        internal OutputWriter(
             string baseOutputDirectory,
             string outputDirectory,
             IDateTimeProvider dateTimeProvider,
@@ -51,7 +51,7 @@ namespace SystemMonitor.Logic
             this.renamedFilesFile = Path.Combine(this.fileChangesDirectory, "RenamedFiles.txt");
         }
 
-        public void WriteChangedFile(string filePath)
+        internal void WriteChangedFile(string filePath)
         {
             if (this.IsOutputFile(filePath))
             {
@@ -69,7 +69,7 @@ namespace SystemMonitor.Logic
             this.AddFilePathToChangesFile(this.changedFilesFile, filePath);
         }
 
-        public void WriteCreatedFile(string filePath)
+        internal void WriteCreatedFile(string filePath)
         {
             if (this.IsOutputFile(filePath))
             {
@@ -87,7 +87,7 @@ namespace SystemMonitor.Logic
             this.AddFilePathToChangesFile(this.createdFilesFile, filePath);
         }
 
-        public void WriteDeletedFile(string filePath)
+        internal void WriteDeletedFile(string filePath)
         {
             string message = this.FormatMessage($"Deleted: {filePath}");
 
@@ -100,7 +100,7 @@ namespace SystemMonitor.Logic
             this.AddFilePathToChangesFile(this.deletedFilesFile, filePath);
         }
 
-        public void WriteRenamedFile(string oldFilePath, string newFilePath)
+        internal void WriteRenamedFile(string oldFilePath, string newFilePath)
         {
             string message = this.FormatMessage($"Renamed: {oldFilePath} to {newFilePath}");
 
@@ -115,7 +115,7 @@ namespace SystemMonitor.Logic
             this.AddFilePathToChangesFile(this.renamedFilesFile, renaming);
         }
 
-        public void WriteError(string error)
+        internal void WriteError(string error)
         {
             string message = this.FormatMessage($"Error: {error}");
 
