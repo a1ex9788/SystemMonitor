@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
 using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Tests.Fakes;
 
 namespace SystemMonitor.Tests.Utilities
 {
