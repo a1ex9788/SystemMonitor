@@ -28,12 +28,12 @@ namespace SystemMonitor.Logic
 
             string generalEventsFile = Path.Combine(outputDirectory.Path, OutputWriter.EventsFileName);
 
-            foreach (DriveInfo driveInfo in drivesObtainer.GetDrives())
+            foreach (Drive drive in drivesObtainer.GetDrives())
             {
-                string driveOutputDirectory = Path.Combine(outputDirectory.Path, driveInfo.VolumeLabel);
+                string driveOutputDirectory = Path.Combine(outputDirectory.Path, drive.VolumeLabel);
 
                 Task task = directoriesMonitor.MonitorAsync(
-                    driveInfo.RootDirectory.FullName,
+                    drive.FullPath,
                     baseOutputDirectory: outputDirectory.Path,
                     driveOutputDirectory,
                     generalAllFileChangesFile,

@@ -43,9 +43,9 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
-            IReadOnlyCollection<DriveInfo> drives = new DrivesObtainer().GetDrives();
+            IReadOnlyCollection<Drive> drives = new DrivesObtainer().GetDrives();
 
-            foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
+            foreach (string drive in drives.Select(di => di.FullPath))
             {
                 stringWriter.ToString().Should().Contain($"Monitoring directory '{drive}'...");
             }
@@ -62,7 +62,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent, exactContent: false);
 
             string fileDrive = new FileInfo(filePath).Directory!.Root.FullName;
-            fileDrive = drives.First(di => di.RootDirectory.FullName == fileDrive).VolumeLabel;
+            fileDrive = drives.First(di => di.FullPath == fileDrive).VolumeLabel;
             string fileDriveOutputDirectory = Path.Combine(outputDirectory, fileDrive);
             expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
             await OutputFilesChecker.CheckEventsFileAsync(
@@ -132,9 +132,9 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
-            IReadOnlyCollection<DriveInfo> drives = new DrivesObtainer().GetDrives();
+            IReadOnlyCollection<Drive> drives = new DrivesObtainer().GetDrives();
 
-            foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
+            foreach (string drive in drives.Select(di => di.FullPath))
             {
                 stringWriter.ToString().Should().Contain($"Monitoring directory '{drive}'...");
             }

@@ -6,9 +6,12 @@ namespace SystemMonitor.Logic.Utilities.Drives
 {
     internal class DrivesObtainer : IDrivesObtainer
     {
-        public IReadOnlyCollection<DriveInfo> GetDrives()
+        public IReadOnlyCollection<Drive> GetDrives()
         {
-            return DriveInfo.GetDrives().Where(di => di.DriveType == DriveType.Fixed).ToArray();
+            return DriveInfo.GetDrives()
+                .Where(di => di.DriveType == DriveType.Fixed)
+                .Select(di => new Drive(di.VolumeLabel, di.RootDirectory.FullName))
+                .ToArray();
         }
     }
 }
