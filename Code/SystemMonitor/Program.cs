@@ -11,7 +11,7 @@ namespace SystemMonitor
         {
             try
             {
-                using CommandLineApplication commandLineApplication = new CommandLineApplication()
+                using CommandLineApplication commandLineApplication = new CommandLineApplication
                 {
                     Name = "systemMonitor",
                 };
@@ -43,8 +43,7 @@ namespace SystemMonitor
             {
                 IServiceProvider serviceProvider = new MonitorCommandServiceProvider(ct);
 
-                IMonitorCommand monitorCommand = serviceProvider
-                    .GetRequiredService<IMonitorCommand>();
+                IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
                 return monitorCommand.ExecuteAsync(directoryCommandOption.Value());
             });

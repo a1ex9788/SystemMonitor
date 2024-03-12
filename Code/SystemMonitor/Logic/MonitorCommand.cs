@@ -5,9 +5,8 @@ using SystemMonitor.Logic.Utilities;
 
 namespace SystemMonitor.Logic
 {
-    internal class MonitorCommand(
-        DirectoriesMonitor directoriesMonitor, OutputDirectory outputDirectory)
-            : IMonitorCommand
+    internal class MonitorCommand(DirectoriesMonitor directoriesMonitor, OutputDirectory outputDirectory)
+        : IMonitorCommand
     {
         public Task ExecuteAsync(string? directory)
         {
@@ -24,16 +23,13 @@ namespace SystemMonitor.Logic
         {
             List<Task> tasks = [];
 
-            string generalAllFileChangesFile = Path.Combine(
-                outputDirectory.Path, OutputWriter.AllFileChangesFileName);
+            string generalAllFileChangesFile = Path.Combine(outputDirectory.Path, OutputWriter.AllFileChangesFileName);
 
-            string generalEventsFile = Path.Combine(
-                outputDirectory.Path, OutputWriter.EventsFileName);
+            string generalEventsFile = Path.Combine(outputDirectory.Path, OutputWriter.EventsFileName);
 
             foreach (DriveInfo driveInfo in DrivesObtainer.GetDrives())
             {
-                string driveOutputDirectory = Path.Combine(
-                    outputDirectory.Path, driveInfo.VolumeLabel);
+                string driveOutputDirectory = Path.Combine(outputDirectory.Path, driveInfo.VolumeLabel);
 
                 Task task = directoriesMonitor.MonitorAsync(
                     driveInfo.RootDirectory.FullName,

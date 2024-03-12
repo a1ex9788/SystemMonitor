@@ -6,7 +6,7 @@ insert_final_newline = false
 end_of_line = CRLF
 
 # Editor Guidelines VS extension.
-guidelines = 100
+guidelines = 120
 
 [*.{csproj,props,targets}]
 indent_size = 2

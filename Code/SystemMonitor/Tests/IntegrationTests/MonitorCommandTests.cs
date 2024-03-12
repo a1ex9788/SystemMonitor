@@ -78,8 +78,7 @@ namespace SystemMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            MonitorCommandServiceProvider.ExtraRegistrationsAction =
-                sc => sc.AddSingleton(monitorCommand);
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Program.Main(args);
@@ -107,8 +106,7 @@ namespace SystemMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            MonitorCommandServiceProvider.ExtraRegistrationsAction =
-                sc => sc.AddSingleton(monitorCommand);
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Program.Main(args);
@@ -139,8 +137,7 @@ namespace SystemMonitor.Tests.IntegrationTests
                     return Task.CompletedTask;
                 });
 
-            MonitorCommandServiceProvider.ExtraRegistrationsAction =
-                sc => sc.AddSingleton(monitorCommand);
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Action action = () => Program.Main(args);
@@ -151,7 +148,7 @@ namespace SystemMonitor.Tests.IntegrationTests
             commandExecuted.Should().BeFalse();
 
             string expectedOutput =
-               $"Specify --help for a list of available options and commands.{Environment.NewLine}";
+                $"Specify --help for a list of available options and commands.{Environment.NewLine}";
             stringWriter.ToString().Should().Be(expectedOutput);
         }
 
@@ -169,8 +166,7 @@ namespace SystemMonitor.Tests.IntegrationTests
                     throw new Exception("Test exception.");
                 });
 
-            MonitorCommandServiceProvider.ExtraRegistrationsAction =
-                sc => sc.AddSingleton(monitorCommand);
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
             Action action = () => Program.Main(args);
@@ -181,11 +177,8 @@ namespace SystemMonitor.Tests.IntegrationTests
             string expectedErrorsFile = "Errors.txt";
             string method = "SystemMonitor.Tests.IntegrationTests.MonitorCommandTests.<>c" +
                 ".<MonitorCommand_UnexpectedError_SavesError>b__4_0(CallInfo x)";
-            string expectedContent =
-               $"System.Exception: Test exception.{Environment.NewLine}" +
-               $"   at {method}";
-            await OutputFilesChecker.CheckFile(
-                expectedErrorsFile, expectedContent, exactContent: false);
+            string expectedContent = $"System.Exception: Test exception.{Environment.NewLine}   at {method}";
+            await OutputFilesChecker.CheckFile(expectedErrorsFile, expectedContent, exactContent: false);
         }
     }
 }

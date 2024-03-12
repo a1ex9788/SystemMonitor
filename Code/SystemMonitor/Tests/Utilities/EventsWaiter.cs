@@ -15,10 +15,7 @@ namespace SystemMonitor.Tests.Utilities
 
         public static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {
-            await WaitForExpectedOutputAsync(
-                stringWriter,
-                "Monitoring directory",
-                EventsRegistrationMaxTime);
+            await WaitForExpectedOutputAsync(stringWriter, "Monitoring directory", EventsRegistrationMaxTime);
         }
 
         public static async Task WaitForEventsProsecutionAsync(
@@ -72,18 +69,13 @@ namespace SystemMonitor.Tests.Utilities
                 }
             }
 
-            await WaitForExpectedOutputAsync(
-                stringWriter,
-                expectedOutput,
-                notExpectedOutput,
-                EventsProsecutionMaxTime);
+            await WaitForExpectedOutputAsync(stringWriter, expectedOutput, notExpectedOutput, EventsProsecutionMaxTime);
         }
 
         private static async Task WaitForExpectedOutputAsync(
             StringWriter stringWriter, string expectedOutput, TimeSpan maxWaitingTime)
         {
-            using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(maxWaitingTime);
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(maxWaitingTime);
 
             bool expectedOutputPrinted = false;
 
@@ -113,8 +105,7 @@ namespace SystemMonitor.Tests.Utilities
             IReadOnlyCollection<string> notExpectedOutput,
             TimeSpan maxWaitingTime)
         {
-            using CancellationTokenSource cancellationTokenSource =
-                new CancellationTokenSource(maxWaitingTime);
+            using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(maxWaitingTime);
 
             bool expectedOutputPrinted = false;
 

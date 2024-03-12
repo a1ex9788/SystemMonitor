@@ -29,12 +29,10 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider
-                .GetRequiredService<DirectoriesMonitor>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testDirectory, baseOutputDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -43,9 +41,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await File.WriteAllTextAsync(filePath, string.Empty);
 
             // Assert.
-            await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedChangedFiles: [filePath]);
+            await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedChangedFiles: [filePath]);
 
             cancellationTokenSource.Cancel();
             await task;
@@ -59,8 +55,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
-            await OutputFilesChecker.CheckChangesFile(
-                outputDirectory, "ChangedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(outputDirectory, "ChangedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -78,8 +73,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider
-                .GetRequiredService<DirectoriesMonitor>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(
@@ -91,9 +85,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await File.Create(filePath).DisposeAsync();
 
             // Assert.
-            await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedCreatedFiles: [filePath]);
+            await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
             cancellationTokenSource.Cancel();
             await task;
@@ -107,8 +99,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
-            await OutputFilesChecker.CheckChangesFile(
-                outputDirectory, "CreatedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(outputDirectory, "CreatedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -126,12 +117,10 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider
-                .GetRequiredService<DirectoriesMonitor>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testDirectory, baseOutputDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -141,9 +130,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedDeletedFiles: [filePath]);
-
+                stringWriter, expectedDeletedFiles: [filePath]);
             cancellationTokenSource.Cancel();
             await task;
 
@@ -156,8 +143,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [filePath];
-            await OutputFilesChecker.CheckChangesFile(
-                outputDirectory, "DeletedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(outputDirectory, "DeletedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -175,12 +161,10 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider
-                .GetRequiredService<DirectoriesMonitor>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
-            Task task = directoriesMonitor.MonitorAsync(
-                testDirectory, baseOutputDirectory, outputDirectory);
+            Task task = directoriesMonitor.MonitorAsync(testDirectory, baseOutputDirectory, outputDirectory);
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
@@ -191,8 +175,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedRenamedFiles: [(oldFilePath, newFilePath)]);
+                stringWriter, expectedRenamedFiles: [(oldFilePath, newFilePath)]);
 
             cancellationTokenSource.Cancel();
             await task;
@@ -209,8 +192,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
 
             string[] expectedContentLines = [renaming];
-            await OutputFilesChecker.CheckChangesFile(
-                outputDirectory, "RenamedFiles", expectedContentLines);
+            await OutputFilesChecker.CheckChangesFile(outputDirectory, "RenamedFiles", expectedContentLines);
         }
 
         [TestMethod]
@@ -228,8 +210,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider
-                .GetRequiredService<DirectoriesMonitor>();
+            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(
@@ -243,9 +224,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter,
-                expectedChangedFiles: [filePath],
-                expectedCreatedFiles: [filePath]);
+                stringWriter, expectedChangedFiles: [filePath], expectedCreatedFiles: [filePath]);
 
             cancellationTokenSource.Cancel();
             await task;

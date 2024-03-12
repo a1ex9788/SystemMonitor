@@ -9,8 +9,7 @@ namespace SystemMonitor.Tests.Utilities.Logic
     {
         private readonly MonitorCommandServiceProvider monitorCommandServiceProvider;
 
-        public MonitorCommandTestServiceProvider(
-            CancellationToken cancellationToken, DateTime? now = null)
+        public MonitorCommandTestServiceProvider(CancellationToken cancellationToken, DateTime? now = null)
         {
             if (now is not null)
             {
@@ -21,8 +20,7 @@ namespace SystemMonitor.Tests.Utilities.Logic
                     };
             }
 
-            this.monitorCommandServiceProvider = new MonitorCommandServiceProvider(
-                cancellationToken);
+            this.monitorCommandServiceProvider = new MonitorCommandServiceProvider(cancellationToken);
         }
 
         public object? GetService(Type serviceType)

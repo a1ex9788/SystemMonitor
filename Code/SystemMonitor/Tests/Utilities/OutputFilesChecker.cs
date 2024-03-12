@@ -26,9 +26,8 @@ namespace SystemMonitor.Tests.Utilities
 
                 await CheckFile(filePath, expectedContent, exactContent);
             }
-            catch (IOException e) when (
-                e.Message.StartsWith(
-                    "The process cannot access the file", StringComparison.Ordinal))
+            catch (IOException e)
+                when (e.Message.StartsWith("The process cannot access the file", StringComparison.Ordinal))
             {
                 await CheckEventsFileAsync(outputDirectory, expectedContent);
             }
@@ -39,8 +38,7 @@ namespace SystemMonitor.Tests.Utilities
             string changesFileName,
             IReadOnlyCollection<string> expectedContentLines)
         {
-            string filePath = Path.Combine(
-                outputDirectory, "FileChanges", $"{changesFileName}.txt");
+            string filePath = Path.Combine(outputDirectory, "FileChanges", $"{changesFileName}.txt");
 
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -52,8 +50,7 @@ namespace SystemMonitor.Tests.Utilities
             await CheckFile(filePath, stringBuilder.ToString());
         }
 
-        public static async Task CheckFile(
-            string filePath, string expectedContent, bool exactContent = true)
+        public static async Task CheckFile(string filePath, string expectedContent, bool exactContent = true)
         {
             File.Exists(filePath).Should().BeTrue();
 

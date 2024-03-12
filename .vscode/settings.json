@@ -5,7 +5,7 @@
     "editor.formatOnSave": true,
     "editor.renderWhitespace": "all",
     "editor.rulers": [
-        100
+        120
     ],
     "editor.wordWrap": "on",
     "explorer.confirmDelete": false,

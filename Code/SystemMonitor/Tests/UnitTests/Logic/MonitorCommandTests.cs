@@ -31,8 +31,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, now);
-            IMonitorCommand monitorCommand = serviceProvider
-                .GetRequiredService<IMonitorCommand>();
+            IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
             Task task = monitorCommand.ExecuteAsync(directory: null);
@@ -43,8 +42,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await File.Create(filePath).DisposeAsync();
 
             // Assert.
-            await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter, expectedCreatedFiles: [filePath]);
+            await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
             IReadOnlyCollection<DriveInfo> drives = DrivesObtainer.GetDrives();
 
@@ -62,8 +60,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
                 outputDirectory, expectedContent, exactContent: false);
 
             expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(
-                outputDirectory, expectedContent, exactContent: false);
+            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent, exactContent: false);
 
             string fileDrive = new FileInfo(filePath).Directory!.Root.FullName;
             fileDrive = drives.First(di => di.RootDirectory.FullName == fileDrive).VolumeLabel;
@@ -86,8 +83,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            IMonitorCommand monitorCommand = serviceProvider
-                .GetRequiredService<IMonitorCommand>();
+            IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
             Task task = monitorCommand.ExecuteAsync(testDirectory);
@@ -124,8 +120,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token);
-            IMonitorCommand monitorCommand = serviceProvider
-                .GetRequiredService<IMonitorCommand>();
+            IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
             Task task = monitorCommand.ExecuteAsync(directory: null);
@@ -136,8 +131,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await File.Create(filePath).DisposeAsync();
 
             // Assert.
-            await EventsWaiter.WaitForEventsProsecutionAsync(
-                stringWriter, expectedCreatedFiles: [filePath]);
+            await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
             IReadOnlyCollection<DriveInfo> drives = DrivesObtainer.GetDrives();
 
