@@ -173,7 +173,12 @@ namespace SystemMonitor.Logic
                 string[] content = this.file.ReadAllLines(changesFile);
 
                 OrderedStringList orderedStringList = new OrderedStringList(content);
-                orderedStringList.AddIfNotExist(filePath);
+                bool added = orderedStringList.AddIfNotExist(filePath);
+
+                if (!added)
+                {
+                    return;
+                }
 
                 newContent = orderedStringList.Items;
             }

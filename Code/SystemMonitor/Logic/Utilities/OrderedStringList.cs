@@ -4,7 +4,7 @@ namespace SystemMonitor.Logic.Utilities
     {
         public string[] Items { get; private set; } = items;
 
-        public void AddIfNotExist(string item)
+        public bool AddIfNotExist(string item)
         {
             string[] newItems = new string[this.Items.Length + 1];
 
@@ -17,7 +17,7 @@ namespace SystemMonitor.Logic.Utilities
 
                 if (comparison == 0)
                 {
-                    return;
+                    return false;
                 }
 
                 if (comparison > 0)
@@ -36,6 +36,8 @@ namespace SystemMonitor.Logic.Utilities
             }
 
             this.Items = newItems;
+
+            return true;
         }
     }
 }
