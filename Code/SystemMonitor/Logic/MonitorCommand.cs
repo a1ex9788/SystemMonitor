@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using SystemMonitor.Logic.Utilities;
+using SystemMonitor.Logic.Utilities.Drives;
 
 namespace SystemMonitor.Logic
 {
-    internal class MonitorCommand(DirectoriesMonitor directoriesMonitor, OutputDirectory outputDirectory)
-        : IMonitorCommand
+    internal class MonitorCommand(
+        IDrivesObtainer drivesObtainer, DirectoriesMonitor directoriesMonitor, OutputDirectory outputDirectory)
+            : IMonitorCommand
     {
         public Task ExecuteAsync(string? directory)
         {
@@ -27,7 +28,7 @@ namespace SystemMonitor.Logic
 
             string generalEventsFile = Path.Combine(outputDirectory.Path, OutputWriter.EventsFileName);
 
-            foreach (DriveInfo driveInfo in DrivesObtainer.GetDrives())
+            foreach (DriveInfo driveInfo in drivesObtainer.GetDrives())
             {
                 string driveOutputDirectory = Path.Combine(outputDirectory.Path, driveInfo.VolumeLabel);
 

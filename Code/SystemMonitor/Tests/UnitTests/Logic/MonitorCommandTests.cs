@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
-using SystemMonitor.Logic.Utilities;
 using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Logic.Utilities.Drives;
 using SystemMonitor.Tests.Utilities;
 using SystemMonitor.Tests.Utilities.Logic;
 
@@ -44,7 +44,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
-            IReadOnlyCollection<DriveInfo> drives = DrivesObtainer.GetDrives();
+            IReadOnlyCollection<DriveInfo> drives = new DrivesObtainer().GetDrives();
 
             foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
             {
@@ -133,7 +133,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
 
-            IReadOnlyCollection<DriveInfo> drives = DrivesObtainer.GetDrives();
+            IReadOnlyCollection<DriveInfo> drives = new DrivesObtainer().GetDrives();
 
             foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
             {

@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SystemMonitor.Logic.Utilities
+namespace SystemMonitor.Logic.Utilities.Drives
 {
-    internal static class DrivesObtainer
+    internal class DrivesObtainer : IDrivesObtainer
     {
-        public static IReadOnlyCollection<DriveInfo> GetDrives()
+        public IReadOnlyCollection<DriveInfo> GetDrives()
         {
             return DriveInfo.GetDrives().Where(di => di.DriveType == DriveType.Fixed).ToArray();
         }

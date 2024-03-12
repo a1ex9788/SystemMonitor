@@ -4,6 +4,7 @@ using System.IO.Abstractions;
 using System.Threading;
 using SystemMonitor.Logic;
 using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Logic.Utilities.Drives;
 
 namespace SystemMonitor
 {
@@ -38,6 +39,8 @@ namespace SystemMonitor
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<IDrivesObtainer, DrivesObtainer>();
+
             services.AddScoped<IMonitorCommand, MonitorCommand>();
             services.AddScoped<DirectoriesMonitor>();
 
