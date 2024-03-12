@@ -17,7 +17,7 @@ namespace SystemMonitor.Logic
             }
 
             return directoriesMonitor.MonitorAsync(
-                directory, baseOutputDirectory: outputDirectory.Path, outputDirectory.Path);
+                directory, baseOutputDirectory: outputDirectory.Path, outputDirectory: outputDirectory.Path);
         }
 
         private Task MonitorAllDrivesAsync()

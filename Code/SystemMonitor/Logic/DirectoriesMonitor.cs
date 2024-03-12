@@ -6,8 +6,7 @@ using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic
 {
-    internal class DirectoriesMonitor(
-        IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
+    internal class DirectoriesMonitor(IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
     {
         public async Task MonitorAsync(
             string directory,
