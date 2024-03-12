@@ -37,7 +37,7 @@ namespace SystemMonitor.Tests.Utilities
         public static async Task CheckChangesFile(
             string outputDirectory,
             string changesFileName,
-            IEnumerable<string> expectedContentLines)
+            IReadOnlyCollection<string> expectedContentLines)
         {
             string filePath = Path.Combine(
                 outputDirectory, "FileChanges", $"{changesFileName}.txt");

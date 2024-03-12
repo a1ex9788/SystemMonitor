@@ -46,7 +46,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await EventsWaiter.WaitForEventsProsecutionAsync(
                 stringWriter, expectedCreatedFiles: [filePath]);
 
-            IEnumerable<DriveInfo> drives = DrivesObtainer.GetDrives();
+            IReadOnlyCollection<DriveInfo> drives = DrivesObtainer.GetDrives();
 
             foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
             {
@@ -139,7 +139,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             await EventsWaiter.WaitForEventsProsecutionAsync(
                 stringWriter, expectedCreatedFiles: [filePath]);
 
-            IEnumerable<DriveInfo> drives = DrivesObtainer.GetDrives();
+            IReadOnlyCollection<DriveInfo> drives = DrivesObtainer.GetDrives();
 
             foreach (string drive in drives.Select(di => di.RootDirectory.FullName))
             {

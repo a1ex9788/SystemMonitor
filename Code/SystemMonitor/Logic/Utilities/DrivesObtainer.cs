@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,9 +6,9 @@ namespace SystemMonitor.Logic.Utilities
 {
     internal static class DrivesObtainer
     {
-        public static IEnumerable<DriveInfo> GetDrives()
+        public static IReadOnlyCollection<DriveInfo> GetDrives()
         {
-            return DriveInfo.GetDrives().Where(di => di.DriveType == DriveType.Fixed);
+            return DriveInfo.GetDrives().Where(di => di.DriveType == DriveType.Fixed).ToArray();
         }
     }
 }

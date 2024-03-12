@@ -2,7 +2,6 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,11 +23,11 @@ namespace SystemMonitor.Tests.Utilities
 
         public static async Task WaitForEventsProsecutionAsync(
             StringWriter stringWriter,
-            IEnumerable<string>? expectedChangedFiles = null,
-            IEnumerable<string>? expectedCreatedFiles = null,
-            IEnumerable<string>? expectedNotCreatedFiles = null,
-            IEnumerable<string>? expectedDeletedFiles = null,
-            IEnumerable<(string OldPath, string NewPath)>? expectedRenamedFiles = null)
+            IReadOnlyCollection<string>? expectedChangedFiles = null,
+            IReadOnlyCollection<string>? expectedCreatedFiles = null,
+            IReadOnlyCollection<string>? expectedNotCreatedFiles = null,
+            IReadOnlyCollection<string>? expectedDeletedFiles = null,
+            IReadOnlyCollection<(string OldPath, string NewPath)>? expectedRenamedFiles = null)
         {
             List<string> expectedOutput = [];
             List<string> notExpectedOutput = [];
@@ -110,8 +109,8 @@ namespace SystemMonitor.Tests.Utilities
 
         private static async Task WaitForExpectedOutputAsync(
             StringWriter stringWriter,
-            IEnumerable<string> expectedOutput,
-            IEnumerable<string> notExpectedOutput,
+            IReadOnlyCollection<string> expectedOutput,
+            IReadOnlyCollection<string> notExpectedOutput,
             TimeSpan maxWaitingTime)
         {
             using CancellationTokenSource cancellationTokenSource =
@@ -119,19 +118,16 @@ namespace SystemMonitor.Tests.Utilities
 
             bool expectedOutputPrinted = false;
 
-            List<string> expectedOutputList = expectedOutput.ToList();
-            List<string> notExpectedOutputList = notExpectedOutput.ToList();
-
             do
             {
                 try
                 {
-                    foreach (string expectedOutputPart in expectedOutputList)
+                    foreach (string expectedOutputPart in expectedOutput)
                     {
                         stringWriter.ToString().Should().Contain(expectedOutputPart);
                     }
 
-                    foreach (string expectedOutputPart in notExpectedOutputList)
+                    foreach (string expectedOutputPart in notExpectedOutput)
                     {
                         stringWriter.ToString().Should().NotContain(expectedOutputPart);
                     }
