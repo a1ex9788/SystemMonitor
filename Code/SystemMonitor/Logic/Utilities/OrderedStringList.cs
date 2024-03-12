@@ -1,13 +1,8 @@
-﻿namespace SystemMonitor.Logic.Utilities
+namespace SystemMonitor.Logic.Utilities
 {
-    internal class OrderedStringList
+    internal class OrderedStringList(string[] items)
     {
-        public OrderedStringList(string[] items)
-        {
-            this.Items = items;
-        }
-
-        public string[] Items { get; private set; }
+        public string[] Items { get; private set; } = items;
 
         public void AddIfNotExist(string item)
         {
