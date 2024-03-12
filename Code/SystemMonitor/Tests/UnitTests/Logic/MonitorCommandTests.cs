@@ -11,7 +11,6 @@ using SystemMonitor.Logic;
 using SystemMonitor.Logic.Utilities.DateTimes;
 using SystemMonitor.Logic.Utilities.Drives;
 using SystemMonitor.Tests.Utilities;
-using SystemMonitor.Tests.Utilities.Logic;
 
 namespace SystemMonitor.Tests.UnitTests.Logic
 {

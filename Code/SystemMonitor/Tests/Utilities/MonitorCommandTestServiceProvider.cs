@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using SystemMonitor.Logic.Utilities.DateTimes;
 
-namespace SystemMonitor.Tests.Utilities.Logic
+namespace SystemMonitor.Tests.Utilities
 {
     internal class MonitorCommandTestServiceProvider : IServiceProvider
     {
