@@ -9,7 +9,7 @@ namespace SystemMonitor.Logic
     internal class DirectoriesMonitor(
         IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
     {
-        internal async Task MonitorAsync(
+        public async Task MonitorAsync(
             string directory,
             string baseOutputDirectory,
             string outputDirectory,

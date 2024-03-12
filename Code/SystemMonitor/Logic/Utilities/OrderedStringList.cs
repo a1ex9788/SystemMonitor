@@ -2,14 +2,14 @@
 {
     internal class OrderedStringList
     {
-        internal OrderedStringList(string[] items)
+        public OrderedStringList(string[] items)
         {
             this.Items = items;
         }
 
-        internal string[] Items { get; private set; }
+        public string[] Items { get; private set; }
 
-        internal void AddIfNotExist(string item)
+        public void AddIfNotExist(string item)
         {
             string[] newItems = new string[this.Items.Length + 1];
 

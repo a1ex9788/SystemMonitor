@@ -12,6 +12,6 @@ namespace SystemMonitor.Logic
             this.Path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), formattedData);
         }
 
-        internal string Path { get; }
+        public string Path { get; }
     }
 }

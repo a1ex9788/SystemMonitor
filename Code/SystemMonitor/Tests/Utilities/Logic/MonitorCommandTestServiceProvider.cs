@@ -9,7 +9,7 @@ namespace SystemMonitor.Tests.Utilities.Logic
     {
         private readonly MonitorCommandServiceProvider monitorCommandServiceProvider;
 
-        internal MonitorCommandTestServiceProvider(
+        public MonitorCommandTestServiceProvider(
             CancellationToken cancellationToken, DateTime? now = null)
         {
             if (now is not null)

@@ -12,9 +12,9 @@ namespace SystemMonitor
         private readonly ServiceProvider serviceProvider;
 
         // Hook for tests.
-        internal static Action<IServiceCollection>? ExtraRegistrationsAction;
+        public static Action<IServiceCollection>? ExtraRegistrationsAction;
 
-        internal MonitorCommandServiceProvider(CancellationToken? cancellationToken = null)
+        public MonitorCommandServiceProvider(CancellationToken? cancellationToken = null)
         {
             IServiceCollection services = new ServiceCollection();
 

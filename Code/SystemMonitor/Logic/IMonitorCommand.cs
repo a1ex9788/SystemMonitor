@@ -4,6 +4,6 @@ namespace SystemMonitor.Logic
 {
     internal interface IMonitorCommand
     {
-        internal Task ExecuteAsync(string? directory);
+        Task ExecuteAsync(string? directory);
     }
 }

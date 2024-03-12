@@ -9,7 +9,7 @@ namespace SystemMonitor.Tests.Utilities
 {
     internal static class OutputFilesChecker
     {
-        internal static async Task CheckAllFileChangesFileAsync(
+        public static async Task CheckAllFileChangesFileAsync(
             string outputDirectory, string expectedContent, bool exactContent = true)
         {
             string filePath = Path.Combine(outputDirectory, "AllFileChanges.txt");
@@ -17,7 +17,7 @@ namespace SystemMonitor.Tests.Utilities
             await CheckFile(filePath, expectedContent, exactContent);
         }
 
-        internal static async Task CheckEventsFileAsync(
+        public static async Task CheckEventsFileAsync(
             string outputDirectory, string expectedContent, bool exactContent = true)
         {
             try
@@ -34,7 +34,7 @@ namespace SystemMonitor.Tests.Utilities
             }
         }
 
-        internal static async Task CheckChangesFile(
+        public static async Task CheckChangesFile(
             string outputDirectory,
             string changesFileName,
             IEnumerable<string> expectedContentLines)
@@ -52,7 +52,7 @@ namespace SystemMonitor.Tests.Utilities
             await CheckFile(filePath, stringBuilder.ToString());
         }
 
-        internal static async Task CheckFile(
+        public static async Task CheckFile(
             string filePath, string expectedContent, bool exactContent = true)
         {
             File.Exists(filePath).Should().BeTrue();

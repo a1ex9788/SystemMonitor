@@ -14,7 +14,7 @@ namespace SystemMonitor.Tests.Utilities
         private static readonly TimeSpan EventsProsecutionMaxTime = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan WaitingTimeBetweenRetries = TimeSpan.FromMilliseconds(100);
 
-        internal static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
+        public static async Task WaitForEventsRegistrationAsync(StringWriter stringWriter)
         {
             await WaitForExpectedOutputAsync(
                 stringWriter,
@@ -22,7 +22,7 @@ namespace SystemMonitor.Tests.Utilities
                 EventsRegistrationMaxTime);
         }
 
-        internal static async Task WaitForEventsProsecutionAsync(
+        public static async Task WaitForEventsProsecutionAsync(
             StringWriter stringWriter,
             IEnumerable<string>? expectedChangedFiles = null,
             IEnumerable<string>? expectedCreatedFiles = null,

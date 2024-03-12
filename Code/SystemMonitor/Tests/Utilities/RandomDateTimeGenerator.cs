@@ -6,7 +6,7 @@ namespace SystemMonitor.Tests.Utilities
     {
         private static readonly Random random = new Random();
 
-        internal static DateTime Get()
+        public static DateTime Get()
         {
             return DateTime.MinValue.AddDays(random.Next(0, 1000000));
         }

@@ -5,7 +5,7 @@ namespace SystemMonitor.Tests.Utilities
 {
     internal static class TempPathsObtainer
     {
-        internal static string GetTempDirectory(string parentDirectory)
+        public static string GetTempDirectory(string parentDirectory)
         {
             string tempDirectory = Path.Combine(parentDirectory, Guid.NewGuid().ToString());
 
@@ -14,17 +14,17 @@ namespace SystemMonitor.Tests.Utilities
             return tempDirectory;
         }
 
-        internal static string GetTempDirectory()
+        public static string GetTempDirectory()
         {
             return GetTempDirectory(Path.GetTempPath());
         }
 
-        internal static string GetTempFile(string parentDirectory)
+        public static string GetTempFile(string parentDirectory)
         {
             return Path.Combine(parentDirectory, Guid.NewGuid().ToString());
         }
 
-        internal static string GetTempFile()
+        public static string GetTempFile()
         {
             return Path.GetTempFileName();
         }
