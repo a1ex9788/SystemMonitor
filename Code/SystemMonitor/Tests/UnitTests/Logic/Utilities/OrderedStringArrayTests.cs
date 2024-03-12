@@ -1,44 +1,44 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SystemMonitor.Logic.Utilities;
 
 namespace SystemMonitor.Tests.UnitTests.Logic.Utilities
 {
     [TestClass]
-    public class OrderedStringListTests
+    public class OrderedStringArrayTests
     {
         [TestMethod]
         public void AddIfNotExist_StartingItem_AddsItemAtStart()
         {
             // Arrange.
-            string[] items = ["a", "b", "d"];
+            string[] items = ["b", "c", "d"];
 
-            OrderedStringList orderedStringList = new OrderedStringList(items);
+            OrderedStringArray orderedStringArray = new OrderedStringArray(items);
 
             // Act.
-            orderedStringList.AddIfNotExist("c");
+            orderedStringArray.AddIfNotExist("a");
 
             // Assert.
             string[] expectedItems = ["a", "b", "c", "d"];
 
-            orderedStringList.Items.Should().BeEquivalentTo(expectedItems);
+            orderedStringArray.GetItems().Should().BeEquivalentTo(expectedItems);
         }
 
         [TestMethod]
         public void AddIfNotExist_IntermediateItem_AddsItemAtMiddle()
         {
             // Arrange.
-            string[] items = ["b", "c", "d"];
+            string[] items = ["a", "b", "d"];
 
-            OrderedStringList orderedStringList = new OrderedStringList(items);
+            OrderedStringArray orderedStringArray = new OrderedStringArray(items);
 
             // Act.
-            orderedStringList.AddIfNotExist("a");
+            orderedStringArray.AddIfNotExist("c");
 
             // Assert.
             string[] expectedItems = ["a", "b", "c", "d"];
 
-            orderedStringList.Items.Should().BeEquivalentTo(expectedItems);
+            orderedStringArray.GetItems().Should().BeEquivalentTo(expectedItems);
         }
 
         [TestMethod]
@@ -47,15 +47,15 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Utilities
             // Arrange.
             string[] items = ["a", "b", "c"];
 
-            OrderedStringList orderedStringList = new OrderedStringList(items);
+            OrderedStringArray orderedStringArray = new OrderedStringArray(items);
 
             // Act.
-            orderedStringList.AddIfNotExist("d");
+            orderedStringArray.AddIfNotExist("d");
 
             // Assert.
             string[] expectedItems = ["a", "b", "c", "d"];
 
-            orderedStringList.Items.Should().BeEquivalentTo(expectedItems);
+            orderedStringArray.GetItems().Should().BeEquivalentTo(expectedItems);
         }
 
         [TestMethod]
@@ -64,15 +64,15 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Utilities
             // Arrange.
             string[] items = ["a", "b", "c", "d"];
 
-            OrderedStringList orderedStringList = new OrderedStringList(items);
+            OrderedStringArray orderedStringArray = new OrderedStringArray(items);
 
             // Act.
-            orderedStringList.AddIfNotExist("c");
+            orderedStringArray.AddIfNotExist("c");
 
             // Assert.
             string[] expectedItems = ["a", "b", "c", "d"];
 
-            orderedStringList.Items.Should().BeEquivalentTo(expectedItems);
+            orderedStringArray.GetItems().Should().BeEquivalentTo(expectedItems);
         }
     }
 }

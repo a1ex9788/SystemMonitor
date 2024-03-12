@@ -1,18 +1,16 @@
 namespace SystemMonitor.Logic.Utilities
 {
-    internal class OrderedStringList(string[] items)
+    internal class OrderedStringArray(string[] items)
     {
-        public string[] Items { get; private set; } = items;
-
         public bool AddIfNotExist(string item)
         {
-            string[] newItems = new string[this.Items.Length + 1];
+            string[] newItems = new string[items.Length + 1];
 
             int i = 0;
 
-            for (; i < this.Items.Length; i++)
+            for (; i < items.Length; i++)
             {
-                string currentItem = this.Items[i];
+                string currentItem = items[i];
                 int comparison = currentItem.CompareTo(item);
 
                 if (comparison == 0)
@@ -30,14 +28,19 @@ namespace SystemMonitor.Logic.Utilities
 
             newItems[i++] = item;
 
-            for (; i <= this.Items.Length; i++)
+            for (; i <= items.Length; i++)
             {
-                newItems[i] = this.Items[i - 1];
+                newItems[i] = items[i - 1];
             }
 
-            this.Items = newItems;
+            items = newItems;
 
             return true;
+        }
+
+        public string[] GetItems()
+        {
+            return items;
         }
     }
 }

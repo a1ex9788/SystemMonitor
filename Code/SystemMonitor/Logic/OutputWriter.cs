@@ -172,15 +172,15 @@ namespace SystemMonitor.Logic
             {
                 string[] content = this.file.ReadAllLines(changesFile);
 
-                OrderedStringList orderedStringList = new OrderedStringList(content);
-                bool added = orderedStringList.AddIfNotExist(filePath);
+                OrderedStringArray orderedStringArray = new OrderedStringArray(content);
+                bool added = orderedStringArray.AddIfNotExist(filePath);
 
                 if (!added)
                 {
                     return;
                 }
 
-                newContent = orderedStringList.Items;
+                newContent = orderedStringArray.GetItems();
             }
             else
             {
