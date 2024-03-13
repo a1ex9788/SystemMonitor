@@ -13,9 +13,11 @@ using SystemMonitor.Tests.Utilities;
 
 namespace SystemMonitor.Tests.UnitTests.Logic
 {
+    // TODO: Use IFileSystem.
     [TestClass]
     public class MonitorCommandTests
     {
+        // TODO: Make not flaky.
         [TestMethod]
         public async Task ExecuteAsync_DirectoryNotSpecified_MonitorAllDrives()
         {

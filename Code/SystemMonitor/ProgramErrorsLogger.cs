@@ -6,6 +6,7 @@ namespace SystemMonitor
 {
     internal class ProgramErrorsLogger
     {
+        // TODO: Use Directory.GetCurrentDirectory().
         private static readonly string ErrorsFile = "Errors.txt";
 
         private readonly IFile file;
