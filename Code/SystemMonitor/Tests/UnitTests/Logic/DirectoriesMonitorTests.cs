@@ -27,7 +27,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, now);
+                cancellationTokenSource.Token, now: now);
             DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
@@ -71,7 +71,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, now);
+                cancellationTokenSource.Token, now: now);
             DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
@@ -115,7 +115,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, now);
+                cancellationTokenSource.Token, now: now);
             DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
@@ -159,7 +159,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, now);
+                cancellationTokenSource.Token, now: now);
             DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.
@@ -208,7 +208,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, now);
+                cancellationTokenSource.Token, now: now);
             DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
 
             // Act.

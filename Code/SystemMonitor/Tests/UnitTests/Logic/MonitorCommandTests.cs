@@ -2,7 +2,6 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -22,6 +21,11 @@ namespace SystemMonitor.Tests.UnitTests.Logic
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            Drive[] drives =
+            [
+                new Drive("C", @"C:\"),
+                new Drive("D", @"D:\"),
+            ];
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -29,7 +33,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, now);
+                cancellationTokenSource.Token, drives: drives, now: now);
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -42,8 +46,6 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
-
-            IReadOnlyCollection<Drive> drives = new DrivesObtainer().GetDrives();
 
             foreach (string drive in drives.Select(di => di.FullPath))
             {
@@ -80,8 +82,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(cancellationTokenSource.Token);
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -112,13 +113,14 @@ namespace SystemMonitor.Tests.UnitTests.Logic
         {
             // Arrange.
             string testDirectory = TempPathsObtainer.GetTempDirectory();
+            Drive[] drives = [new Drive("C", @"C:\")];
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token);
+                cancellationTokenSource.Token, drives: drives);
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -131,8 +133,6 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
-
-            IReadOnlyCollection<Drive> drives = new DrivesObtainer().GetDrives();
 
             foreach (string drive in drives.Select(di => di.FullPath))
             {

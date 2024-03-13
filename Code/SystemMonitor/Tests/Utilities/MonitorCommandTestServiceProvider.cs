@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Logic.Utilities.Drives;
 using SystemMonitor.Tests.Fakes;
 
 namespace SystemMonitor.Tests.Utilities
@@ -10,16 +12,22 @@ namespace SystemMonitor.Tests.Utilities
     {
         private readonly MonitorCommandServiceProvider monitorCommandServiceProvider;
 
-        public MonitorCommandTestServiceProvider(CancellationToken cancellationToken, DateTime? now = null)
+        public MonitorCommandTestServiceProvider(
+            CancellationToken cancellationToken, IReadOnlyCollection<Drive>? drives = null, DateTime? now = null)
         {
-            if (now is not null)
-            {
-                MonitorCommandServiceProvider.ExtraRegistrationsAction =
-                    sc =>
+            MonitorCommandServiceProvider.ExtraRegistrationsAction =
+                sc =>
+                {
+                    if (drives is not null)
+                    {
+                        sc.AddScoped<IDrivesObtainer>(_ => new DrivesObtainerFake(drives));
+                    }
+
+                    if (now is not null)
                     {
                         sc.AddScoped<IDateTimeProvider>(_ => new DateTimeProviderFake(now.Value));
-                    };
-            }
+                    }
+                };
 
             this.monitorCommandServiceProvider = new MonitorCommandServiceProvider(cancellationToken);
         }
