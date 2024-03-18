@@ -35,8 +35,8 @@ namespace SystemMonitor.Tests.IntegrationTests
             Function().Should().Be(-1);
 
             string expectedErrorsFile = "Errors.txt";
-            string method = "SystemMonitor.Tests.IntegrationTests.ErrorManagementTests.<>c" +
-                ".<MonitorCommand_UnexpectedError_SavesErrorAndReturnsErrorExitCode>b__0_0(CallInfo x)";
+            string method = $"{typeof(ErrorManagementTests).FullName}.<>c" +
+                $".<{nameof(MonitorCommand_UnexpectedError_SavesErrorAndReturnsErrorExitCode)}>b__0_0(CallInfo x)";
             string expectedContent = $"System.Exception: Test exception.{Environment.NewLine}   at {method}";
             await OutputFilesChecker.CheckFile(expectedErrorsFile, expectedContent, exactContent: false);
         }
