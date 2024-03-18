@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SystemMonitor.Exceptions;
 using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic
@@ -15,6 +16,11 @@ namespace SystemMonitor.Logic
             string? generalAllFileChangesFile = null,
             string? generalEventsFile = null)
         {
+            if (!Directory.Exists(directory))
+            {
+                throw new NotExistingDirectoryException(directory);
+            }
+
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
             using FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(directory);

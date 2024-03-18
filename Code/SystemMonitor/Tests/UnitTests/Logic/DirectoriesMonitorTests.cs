@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SystemMonitor.Exceptions;
 using SystemMonitor.Logic;
 using SystemMonitor.Tests.Utilities;
 
@@ -13,6 +14,28 @@ namespace SystemMonitor.Tests.UnitTests.Logic
     [TestClass]
     public class DirectoriesMonitorTests
     {
+        [TestMethod]
+        public async Task MonitorAsync_NotExistingDirectory_ThrowsException()
+        {
+            // Arrange.
+            string testDirectory = TempPathsObtainer.GetTempDirectory(createDirectory: false);
+            string baseOutputDirectory = TempPathsObtainer.GetTempDirectory();
+            string outputDirectory = baseOutputDirectory;
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider();
+            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+
+            // Act.
+            Func<Task> action =
+                () => directoriesMonitor.MonitorAsync(testDirectory, baseOutputDirectory, outputDirectory);
+
+            // Assert.
+            await action.Should().ThrowAsync<NotExistingDirectoryException>();
+        }
+
         [TestMethod]
         public async Task MonitorAsync_FileChanged_PrintsAndSavesFileName()
         {

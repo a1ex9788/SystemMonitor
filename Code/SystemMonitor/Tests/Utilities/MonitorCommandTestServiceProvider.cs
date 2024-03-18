@@ -13,8 +13,12 @@ namespace SystemMonitor.Tests.Utilities
         private readonly MonitorCommandServiceProvider monitorCommandServiceProvider;
 
         public MonitorCommandTestServiceProvider(
-            CancellationToken cancellationToken, IReadOnlyCollection<Drive>? drives = null, DateTime? now = null)
+            CancellationToken? cancellationToken = null,
+            IReadOnlyCollection<Drive>? drives = null,
+            DateTime? now = null)
         {
+            cancellationToken ??= CancellationToken.None;
+
             // TODO: Study if this is producing concurrency errors at tests.
             MonitorCommandServiceProvider.ExtraRegistrationsAction =
                 sc =>
