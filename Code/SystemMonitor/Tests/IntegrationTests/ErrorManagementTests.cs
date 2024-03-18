@@ -13,7 +13,36 @@ namespace SystemMonitor.Tests.IntegrationTests
     public class ErrorManagementTests
     {
         [TestMethod]
-        public async Task MonitorCommand_UnexpectedError_SavesErrorAndReturnsErrorExitCode()
+        public void Tool_NoError_ReturnsSuccessExitCode()
+        {
+            // Arrange.
+            string[] args = [];
+
+            bool executed = false;
+
+            IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
+            monitorCommand
+                .ExecuteAsync(Arg.Any<string?>())
+                .Returns(_ =>
+                {
+                    executed = true;
+
+                    return Task.CompletedTask;
+                });
+
+            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
+
+            // Act.
+            int Function() => Program.Main(args);
+
+            // Assert.
+            Function().Should().Be(0);
+
+            executed.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public async Task Tool_UnexpectedError_SavesErrorAndReturnsErrorExitCode()
         {
             // Arrange.
             string[] args = [];
@@ -36,7 +65,7 @@ namespace SystemMonitor.Tests.IntegrationTests
 
             string expectedErrorsFile = "Errors.txt";
             string method = $"{typeof(ErrorManagementTests).FullName}.<>c" +
-                $".<{nameof(MonitorCommand_UnexpectedError_SavesErrorAndReturnsErrorExitCode)}>b__0_0(CallInfo x)";
+                $".<{nameof(Tool_UnexpectedError_SavesErrorAndReturnsErrorExitCode)}>b__1_0(CallInfo x)";
             string expectedContent = $"System.Exception: Test exception.{Environment.NewLine}   at {method}";
             await OutputFilesChecker.CheckFile(expectedErrorsFile, expectedContent, exactContent: false);
         }
