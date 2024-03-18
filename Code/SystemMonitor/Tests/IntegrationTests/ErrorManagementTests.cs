@@ -13,7 +13,7 @@ namespace SystemMonitor.Tests.IntegrationTests
     public class ErrorManagementTests
     {
         [TestMethod]
-        public async Task MonitorCommand_UnexpectedError_SavesError()
+        public async Task MonitorCommand_UnexpectedError_SavesErrorAndReturnsErrorExitCode()
         {
             // Arrange.
             string[] args = [];
@@ -29,14 +29,14 @@ namespace SystemMonitor.Tests.IntegrationTests
             MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
-            Action action = () => Program.Main(args);
+            int Function() => Program.Main(args);
 
             // Assert.
-            action.Should().NotThrow();
+            Function().Should().Be(-1);
 
             string expectedErrorsFile = "Errors.txt";
             string method = "SystemMonitor.Tests.IntegrationTests.ErrorManagementTests.<>c" +
-                ".<MonitorCommand_UnexpectedError_SavesError>b__0_0(CallInfo x)";
+                ".<MonitorCommand_UnexpectedError_SavesErrorAndReturnsErrorExitCode>b__0_0(CallInfo x)";
             string expectedContent = $"System.Exception: Test exception.{Environment.NewLine}   at {method}";
             await OutputFilesChecker.CheckFile(expectedErrorsFile, expectedContent, exactContent: false);
         }
