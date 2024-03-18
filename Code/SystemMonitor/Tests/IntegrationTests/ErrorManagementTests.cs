@@ -16,8 +16,6 @@ namespace SystemMonitor.Tests.IntegrationTests
         public void Tool_NoError_ReturnsSuccessExitCode()
         {
             // Arrange.
-            string[] args = [];
-
             bool executed = false;
 
             IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
@@ -33,7 +31,7 @@ namespace SystemMonitor.Tests.IntegrationTests
             MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
-            int Function() => Program.Main(args);
+            static int Function() => Program.Main(args: []);
 
             // Assert.
             Function().Should().Be(0);
@@ -45,8 +43,6 @@ namespace SystemMonitor.Tests.IntegrationTests
         public async Task Tool_UnexpectedError_SavesErrorAndReturnsErrorExitCode()
         {
             // Arrange.
-            string[] args = [];
-
             IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
             monitorCommand
                 .ExecuteAsync(Arg.Any<string?>())
@@ -58,7 +54,7 @@ namespace SystemMonitor.Tests.IntegrationTests
             MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
 
             // Act.
-            int Function() => Program.Main(args);
+            static int Function() => Program.Main(args: []);
 
             // Assert.
             Function().Should().Be(-1);
