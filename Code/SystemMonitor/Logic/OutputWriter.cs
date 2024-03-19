@@ -11,44 +11,16 @@ namespace SystemMonitor.Logic
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IFile file;
 
-        private readonly string baseOutputDirectory;
-        private readonly string fileChangesDirectory;
-        private readonly string? generalAllFileChangesFile;
-        private readonly string? generalEventsFile;
-        private readonly string eventsFile;
-        private readonly string allFileChangesFile;
-        private readonly string changedFilesFile;
-        private readonly string createdFilesFile;
-        private readonly string deletedFilesFile;
-        private readonly string renamedFilesFile;
+        private readonly OutputFilesInfo outputFilesInfo;
 
-        public static readonly string AllFileChangesFileName = "AllFileChanges.txt";
-        public static readonly string EventsFileName = "Events.txt";
-
-        public OutputWriter(
-            string baseOutputDirectory,
-            string outputDirectory,
-            IDateTimeProvider dateTimeProvider,
-            string? generalAllFileChangesFile = null,
-            string? generalEventsFile = null)
+        public OutputWriter(IDateTimeProvider dateTimeProvider, OutputFilesInfo outputFilesInfo)
         {
             this.dateTimeProvider = dateTimeProvider;
             this.file = new FileSystem().File;
+            this.outputFilesInfo = outputFilesInfo;
 
-            this.baseOutputDirectory = baseOutputDirectory;
-            Directory.CreateDirectory(outputDirectory);
-
-            this.fileChangesDirectory = Path.Combine(outputDirectory, "FileChanges");
-            Directory.CreateDirectory(this.fileChangesDirectory);
-
-            this.generalAllFileChangesFile = generalAllFileChangesFile;
-            this.generalEventsFile = generalEventsFile;
-            this.eventsFile = Path.Combine(outputDirectory, EventsFileName);
-            this.allFileChangesFile = Path.Combine(outputDirectory, "AllFileChanges.txt");
-            this.changedFilesFile = Path.Combine(this.fileChangesDirectory, "ChangedFiles.txt");
-            this.createdFilesFile = Path.Combine(this.fileChangesDirectory, "CreatedFiles.txt");
-            this.deletedFilesFile = Path.Combine(this.fileChangesDirectory, "DeletedFiles.txt");
-            this.renamedFilesFile = Path.Combine(this.fileChangesDirectory, "RenamedFiles.txt");
+            Directory.CreateDirectory(this.outputFilesInfo.OutputDirectory);
+            Directory.CreateDirectory(this.outputFilesInfo.FileChangesDirectory);
         }
 
         public void WriteChangedFile(string filePath)
@@ -64,9 +36,9 @@ namespace SystemMonitor.Logic
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-            this.AddFilePathToChangesFileIfNeeded(this.generalAllFileChangesFile, filePath);
-            this.AddFilePathToChangesFile(this.allFileChangesFile, filePath);
-            this.AddFilePathToChangesFile(this.changedFilesFile, filePath);
+            this.AddFilePathToChangesFileIfNeeded(this.outputFilesInfo.GeneralAllFileChangesFile, filePath);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.AllFileChangesFile, filePath);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.ChangedFilesFile, filePath);
         }
 
         public void WriteCreatedFile(string filePath)
@@ -82,9 +54,9 @@ namespace SystemMonitor.Logic
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-            this.AddFilePathToChangesFileIfNeeded(this.generalAllFileChangesFile, filePath);
-            this.AddFilePathToChangesFile(this.allFileChangesFile, filePath);
-            this.AddFilePathToChangesFile(this.createdFilesFile, filePath);
+            this.AddFilePathToChangesFileIfNeeded(this.outputFilesInfo.GeneralAllFileChangesFile, filePath);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.AllFileChangesFile, filePath);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.CreatedFilesFile, filePath);
         }
 
         public void WriteDeletedFile(string filePath)
@@ -95,9 +67,9 @@ namespace SystemMonitor.Logic
 
             this.AppendToGeneralEventsFileIfNeeded(message);
             this.AppendToEventsFile(message);
-            this.AddFilePathToChangesFileIfNeeded(this.generalAllFileChangesFile, filePath);
-            this.AddFilePathToChangesFile(this.allFileChangesFile, filePath);
-            this.AddFilePathToChangesFile(this.deletedFilesFile, filePath);
+            this.AddFilePathToChangesFileIfNeeded(this.outputFilesInfo.GeneralAllFileChangesFile, filePath);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.AllFileChangesFile, filePath);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.DeletedFilesFile, filePath);
         }
 
         public void WriteRenamedFile(string oldFilePath, string newFilePath)
@@ -110,9 +82,9 @@ namespace SystemMonitor.Logic
             this.AppendToEventsFile(message);
 
             string renaming = $"{oldFilePath} -> {newFilePath}";
-            this.AddFilePathToChangesFileIfNeeded(this.generalAllFileChangesFile, renaming);
-            this.AddFilePathToChangesFile(this.allFileChangesFile, renaming);
-            this.AddFilePathToChangesFile(this.renamedFilesFile, renaming);
+            this.AddFilePathToChangesFileIfNeeded(this.outputFilesInfo.GeneralAllFileChangesFile, renaming);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.AllFileChangesFile, renaming);
+            this.AddFilePathToChangesFile(this.outputFilesInfo.RenamedFilesFile, renaming);
         }
 
         public void WriteError(string error)
@@ -127,7 +99,7 @@ namespace SystemMonitor.Logic
 
         private bool IsOutputFile(string filePath)
         {
-            return filePath.StartsWith(this.baseOutputDirectory);
+            return filePath.StartsWith(this.outputFilesInfo.ToolOutputDirectory);
         }
 
         private string FormatMessage(string message)
@@ -137,21 +109,21 @@ namespace SystemMonitor.Logic
 
         private void AppendToGeneralEventsFileIfNeeded(string message)
         {
-            if (this.generalEventsFile is null)
+            if (this.outputFilesInfo.GeneralEventsFile is null)
             {
                 return;
             }
 
             message += Environment.NewLine;
 
-            this.file.AppendAllText(this.generalEventsFile, message);
+            this.file.AppendAllText(this.outputFilesInfo.GeneralEventsFile, message);
         }
 
         private void AppendToEventsFile(string message)
         {
             message += Environment.NewLine;
 
-            this.file.AppendAllText(this.eventsFile, message);
+            this.file.AppendAllText(this.outputFilesInfo.EventsFile, message);
         }
 
         private void AddFilePathToChangesFileIfNeeded(string? changesFile, string filePath)

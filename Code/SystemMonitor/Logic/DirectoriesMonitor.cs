@@ -9,12 +9,7 @@ namespace SystemMonitor.Logic
 {
     internal class DirectoriesMonitor(IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
     {
-        public async Task MonitorAsync(
-            string directory,
-            string baseOutputDirectory,
-            string outputDirectory,
-            string? generalAllFileChangesFile = null,
-            string? generalEventsFile = null)
+        public async Task MonitorAsync(string directory, OutputFilesInfo outputFilesInfo)
         {
             if (!Directory.Exists(directory))
             {
@@ -28,12 +23,7 @@ namespace SystemMonitor.Logic
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
 
-            OutputWriter outputWriter = new OutputWriter(
-                baseOutputDirectory,
-                outputDirectory,
-                dateTimeProvider,
-                generalAllFileChangesFile,
-                generalEventsFile);
+            OutputWriter outputWriter = new OutputWriter(dateTimeProvider, outputFilesInfo);
 
             fileSystemWatcher.Changed += OnChanged(outputWriter);
             fileSystemWatcher.Created += OnCreated(outputWriter);
