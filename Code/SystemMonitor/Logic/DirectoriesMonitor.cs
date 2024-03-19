@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Exceptions;
@@ -7,11 +8,17 @@ using SystemMonitor.Logic.Utilities.DateTimes;
 
 namespace SystemMonitor.Logic
 {
-    internal class DirectoriesMonitor(IDateTimeProvider dateTimeProvider, CancellationToken cancellationToken)
+    internal class DirectoriesMonitor(
+        IDateTimeProvider dateTimeProvider, IFileSystem fileSystem, CancellationToken cancellationToken)
     {
+        private readonly IDateTimeProvider dateTimeProvider = dateTimeProvider;
+        private readonly IDirectory directory = fileSystem.Directory;
+        private readonly IFile file = fileSystem.File;
+        private readonly CancellationToken cancellationToken = cancellationToken;
+
         public async Task MonitorAsync(string directory, OutputFilesInfo outputFilesInfo)
         {
-            if (!Directory.Exists(directory))
+            if (!this.directory.Exists(directory))
             {
                 throw new NotExistingDirectoryException(directory);
             }
@@ -23,7 +30,8 @@ namespace SystemMonitor.Logic
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
 
-            OutputWriter outputWriter = new OutputWriter(dateTimeProvider, outputFilesInfo);
+            OutputWriter outputWriter = new OutputWriter(
+                this.dateTimeProvider, this.directory, this.file, outputFilesInfo);
 
             fileSystemWatcher.Changed += OnChanged(outputWriter);
             fileSystemWatcher.Created += OnCreated(outputWriter);
@@ -33,9 +41,9 @@ namespace SystemMonitor.Logic
 
             try
             {
-                while (!cancellationToken.IsCancellationRequested)
+                while (!this.cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+                    await Task.Delay(TimeSpan.FromSeconds(2), this.cancellationToken);
                 }
             }
             catch (TaskCanceledException)

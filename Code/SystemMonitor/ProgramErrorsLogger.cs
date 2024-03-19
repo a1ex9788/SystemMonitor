@@ -15,7 +15,7 @@ namespace SystemMonitor
         {
             IServiceProvider serviceProvider = new MonitorCommandServiceProvider();
 
-            this.file = serviceProvider.GetRequiredService<IFile>();
+            this.file = serviceProvider.GetRequiredService<IFileSystem>().File;
         }
 
         public void LogError(Exception exception)

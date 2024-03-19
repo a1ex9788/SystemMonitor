@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using SystemMonitor.Logic.Utilities.DateTimes;
 using SystemMonitor.Logic.Utilities.Drives;
@@ -14,13 +15,16 @@ namespace SystemMonitor.Logic
         private readonly string outputDirectory;
 
         public MonitorCommand(
-            IDateTimeProvider dateTimeProvider, IDrivesObtainer drivesObtainer, DirectoriesMonitor directoriesMonitor)
+            IDateTimeProvider dateTimeProvider,
+            IDrivesObtainer drivesObtainer,
+            IFileSystem fileSystem,
+            DirectoriesMonitor directoriesMonitor)
         {
             this.drivesObtainer = drivesObtainer;
             this.directoriesMonitor = directoriesMonitor;
 
             string formattedData = dateTimeProvider.GetCurrentDateTime().ToDirectoryName();
-            this.outputDirectory = Path.Combine(Directory.GetCurrentDirectory(), formattedData);
+            this.outputDirectory = Path.Combine(fileSystem.Directory.GetCurrentDirectory(), formattedData);
         }
 
         public Task ExecuteAsync(string? directory)

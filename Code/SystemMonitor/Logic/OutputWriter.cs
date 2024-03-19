@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.IO.Abstractions;
 using SystemMonitor.Logic.Utilities;
 using SystemMonitor.Logic.Utilities.DateTimes;
@@ -10,17 +9,17 @@ namespace SystemMonitor.Logic
     {
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IFile file;
-
         private readonly OutputFilesInfo outputFilesInfo;
 
-        public OutputWriter(IDateTimeProvider dateTimeProvider, OutputFilesInfo outputFilesInfo)
+        public OutputWriter(
+            IDateTimeProvider dateTimeProvider, IDirectory directory, IFile file, OutputFilesInfo outputFilesInfo)
         {
             this.dateTimeProvider = dateTimeProvider;
-            this.file = new FileSystem().File;
+            this.file = file;
             this.outputFilesInfo = outputFilesInfo;
 
-            Directory.CreateDirectory(this.outputFilesInfo.OutputDirectory);
-            Directory.CreateDirectory(this.outputFilesInfo.FileChangesDirectory);
+            directory.CreateDirectory(this.outputFilesInfo.OutputDirectory);
+            directory.CreateDirectory(this.outputFilesInfo.FileChangesDirectory);
         }
 
         public void WriteChangedFile(string filePath)

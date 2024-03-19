@@ -44,7 +44,7 @@ namespace SystemMonitor
             services.AddScoped<IMonitorCommand, MonitorCommand>();
             services.AddScoped<DirectoriesMonitor>();
 
-            services.AddSingleton(new FileSystem().File);
+            services.AddSingleton<IFileSystem, FileSystem>();
         }
     }
 }
