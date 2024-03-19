@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Threading;
 using SystemMonitor.Logic.Utilities.DateTimes;
 using SystemMonitor.Logic.Utilities.Drives;
@@ -15,6 +16,7 @@ namespace SystemMonitor.Tests.Utilities
         public MonitorCommandTestServiceProvider(
             CancellationToken? cancellationToken = null,
             IReadOnlyCollection<Drive>? drives = null,
+            IFileSystem? fileSystem = null,
             DateTime? now = null)
         {
             cancellationToken ??= CancellationToken.None;
@@ -26,6 +28,11 @@ namespace SystemMonitor.Tests.Utilities
                     if (drives is not null)
                     {
                         sc.AddScoped<IDrivesObtainer>(_ => new DrivesObtainerFake(drives));
+                    }
+
+                    if (fileSystem is not null)
+                    {
+                        sc.AddScoped(_ => fileSystem);
                     }
 
                     if (now is not null)

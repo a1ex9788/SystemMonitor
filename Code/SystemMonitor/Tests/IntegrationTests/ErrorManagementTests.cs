@@ -4,10 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.IO;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using SystemMonitor.Exceptions;
 using SystemMonitor.Logic;
-using SystemMonitor.Tests.Utilities;
 
 namespace SystemMonitor.Tests.IntegrationTests
 {
@@ -74,6 +75,8 @@ namespace SystemMonitor.Tests.IntegrationTests
         public async Task Tool_UnexpectedError_SavesErrorAndReturnsErrorExitCode()
         {
             // Arrange.
+            MockFileSystem mockFileSystem = new MockFileSystem();
+
             IMonitorCommand monitorCommand = Substitute.For<IMonitorCommand>();
             monitorCommand
                 .ExecuteAsync(Arg.Any<string?>())
@@ -82,7 +85,12 @@ namespace SystemMonitor.Tests.IntegrationTests
                     throw new Exception("Test exception.");
                 });
 
-            MonitorCommandServiceProvider.ExtraRegistrationsAction = sc => sc.AddSingleton(monitorCommand);
+            MonitorCommandServiceProvider.ExtraRegistrationsAction =
+                sc =>
+                {
+                    sc.AddSingleton<IFileSystem>(mockFileSystem);
+                    sc.AddSingleton(monitorCommand);
+                };
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetError(stringWriter);
@@ -99,7 +107,7 @@ namespace SystemMonitor.Tests.IntegrationTests
             string method = $"{typeof(ErrorManagementTests).FullName}.<>c" +
                 $".<{nameof(Tool_UnexpectedError_SavesErrorAndReturnsErrorExitCode)}>b__2_0(CallInfo x)";
             string expectedContent = $"System.Exception: Test exception.{Environment.NewLine}   at {method}";
-            await OutputFilesChecker.CheckFile(expectedErrorsFile, expectedContent, exactContent: false);
+            await mockFileSystem.CheckFile(expectedErrorsFile, expectedContent, exactContent: false);
         }
     }
 }

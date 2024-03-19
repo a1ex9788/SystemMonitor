@@ -1,35 +1,36 @@
 using System;
 using System.IO;
+using System.IO.Abstractions;
 
 namespace SystemMonitor.Tests.Utilities
 {
     internal static class TempPathsObtainer
     {
-        public static string GetTempDirectory(string parentDirectory, bool createDirectory = true)
+        public static string GetTempDirectory(
+            string parentDirectory, IFileSystem? fileSystem = null, bool createDirectory = false)
         {
             string tempDirectory = Path.Combine(parentDirectory, Guid.NewGuid().ToString());
 
             if (createDirectory)
             {
-                Directory.CreateDirectory(tempDirectory);
+                if (fileSystem is null)
+                {
+                    Directory.CreateDirectory(tempDirectory);
+                }
+                else
+                {
+                    fileSystem.Directory.CreateDirectory(tempDirectory);
+                }
             }
 
             return tempDirectory;
         }
 
-        public static string GetTempDirectory(bool createDirectory = true)
+        public static string GetTempDirectory(IFileSystem? fileSystem = null, bool createDirectory = false)
         {
-            return GetTempDirectory(Path.GetTempPath(), createDirectory);
-        }
+            string tempPath = fileSystem is null ? Path.GetTempPath() : fileSystem.Path.GetTempPath();
 
-        public static string GetTempFile(string parentDirectory)
-        {
-            return Path.Combine(parentDirectory, Guid.NewGuid().ToString());
-        }
-
-        public static string GetTempFile()
-        {
-            return Path.GetTempFileName();
+            return GetTempDirectory(tempPath, fileSystem, createDirectory);
         }
     }
 }

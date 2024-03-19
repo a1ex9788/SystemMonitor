@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
@@ -20,7 +21,8 @@ namespace SystemMonitor.Tests.IntegrationTests
         public async Task MonitorCommand_SomeFileChanges_PrintsAndSavesFileChanges()
         {
             // Arrange.
-            string testDirectory = TempPathsObtainer.GetTempDirectory();
+            FileSystem mockFileSystem = new FileSystem();
+            string testDirectory = mockFileSystem.GetTempDirectory(createDirectory: true);
             string[] args = ["-d", testDirectory];
 
             using StringWriter stringWriter = new StringWriter();
@@ -40,10 +42,10 @@ namespace SystemMonitor.Tests.IntegrationTests
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
+            string filePath = mockFileSystem.GetTempFile(testDirectory);
 
-            await File.Create(filePath).DisposeAsync();
-            await File.WriteAllTextAsync(filePath, string.Empty);
+            await mockFileSystem.File.Create(filePath).DisposeAsync();
+            await mockFileSystem.File.WriteAllTextAsync(filePath, string.Empty);
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(
@@ -58,7 +60,7 @@ namespace SystemMonitor.Tests.IntegrationTests
             string expectedContent =
                 $"[{now}] Created: {filePath}{Environment.NewLine}" +
                 $"[{now}] Changed: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent);
+            await mockFileSystem.CheckEventsFileAsync(outputDirectory, expectedContent);
         }
 
         [TestMethod]

@@ -1,39 +1,38 @@
 using FluentAssertions;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SystemMonitor.Tests.Utilities
+namespace System.IO.Abstractions
 {
-    internal static class OutputFilesChecker
+    internal static class CheckOutputFilesExtensions
     {
         public static async Task CheckAllFileChangesFileAsync(
-            string outputDirectory, string expectedContent, bool exactContent = true)
+            this IFileSystem fileSystem, string outputDirectory, string expectedContent, bool exactContent = true)
         {
             string filePath = Path.Combine(outputDirectory, "AllFileChanges.txt");
 
-            await CheckFile(filePath, expectedContent, exactContent);
+            await fileSystem.CheckFile(filePath, expectedContent, exactContent);
         }
 
         public static async Task CheckEventsFileAsync(
-            string outputDirectory, string expectedContent, bool exactContent = true)
+            this IFileSystem fileSystem, string outputDirectory, string expectedContent, bool exactContent = true)
         {
             try
             {
                 string filePath = Path.Combine(outputDirectory, "Events.txt");
 
-                await CheckFile(filePath, expectedContent, exactContent);
+                await fileSystem.CheckFile(filePath, expectedContent, exactContent);
             }
             catch (IOException e)
                 when (e.Message.StartsWith("The process cannot access the file", StringComparison.Ordinal))
             {
-                await CheckEventsFileAsync(outputDirectory, expectedContent);
+                await fileSystem.CheckEventsFileAsync(outputDirectory, expectedContent);
             }
         }
 
         public static async Task CheckChangesFile(
+            this IFileSystem fileSystem,
             string outputDirectory,
             string changesFileName,
             IReadOnlyCollection<string> expectedContentLines)
@@ -47,14 +46,15 @@ namespace SystemMonitor.Tests.Utilities
                 stringBuilder.AppendLine(line);
             }
 
-            await CheckFile(filePath, stringBuilder.ToString());
+            await fileSystem.CheckFile(filePath, stringBuilder.ToString());
         }
 
-        public static async Task CheckFile(string filePath, string expectedContent, bool exactContent = true)
+        public static async Task CheckFile(
+            this IFileSystem fileSystem, string filePath, string expectedContent, bool exactContent = true)
         {
-            File.Exists(filePath).Should().BeTrue();
+            fileSystem.File.Exists(filePath).Should().BeTrue();
 
-            string content = await File.ReadAllTextAsync(filePath);
+            string content = await fileSystem.File.ReadAllTextAsync(filePath);
 
             if (exactContent)
             {

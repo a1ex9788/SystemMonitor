@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,6 @@ using SystemMonitor.Tests.Utilities;
 
 namespace SystemMonitor.Tests.UnitTests.Logic
 {
-    // TODO: Use IFileSystem.
     [TestClass]
     public class MonitorCommandTests
     {
@@ -22,7 +22,10 @@ namespace SystemMonitor.Tests.UnitTests.Logic
         public async Task ExecuteAsync_DirectoryNotSpecified_MonitorAllDrives()
         {
             // Arrange.
-            string testDirectory = TempPathsObtainer.GetTempDirectory();
+            FileSystem mockFileSystem = new FileSystem();
+
+            string testDirectory = mockFileSystem.GetTempDirectory(createDirectory: true);
+
             Drive[] drives =
             [
                 new Drive("C", @"C:\"),
@@ -35,7 +38,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, drives: drives, now: now);
+                cancellationTokenSource.Token, drives, mockFileSystem, now);
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -43,8 +46,8 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
-            await File.Create(filePath).DisposeAsync();
+            string filePath = mockFileSystem.GetTempFile(testDirectory);
+            await mockFileSystem.File.Create(filePath).DisposeAsync();
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
@@ -59,32 +62,32 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             string outputDirectory = now.ToDirectoryName();
             string expectedContent = $"{filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckAllFileChangesFileAsync(
-                outputDirectory, expectedContent, exactContent: false);
+            await mockFileSystem.CheckAllFileChangesFileAsync(outputDirectory, expectedContent, exactContent: false);
 
             expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(outputDirectory, expectedContent, exactContent: false);
+            await mockFileSystem.CheckEventsFileAsync(outputDirectory, expectedContent, exactContent: false);
 
             string fileDrive = new FileInfo(filePath).Directory!.Root.FullName;
             fileDrive = drives.First(di => di.FullPath == fileDrive).VolumeLabel;
             string fileDriveOutputDirectory = Path.Combine(outputDirectory, fileDrive);
             expectedContent = $"[{now}] Created: {filePath}{Environment.NewLine}";
-            await OutputFilesChecker.CheckEventsFileAsync(
-                fileDriveOutputDirectory, expectedContent, exactContent: false);
+            await mockFileSystem.CheckEventsFileAsync(fileDriveOutputDirectory, expectedContent, exactContent: false);
         }
 
         [TestMethod]
         public async Task ExecuteAsync_DirectorySpecified_DirectoryMonitored()
         {
             // Arrange.
-            string parentDirectory = TempPathsObtainer.GetTempDirectory();
-            string testDirectory = TempPathsObtainer.GetTempDirectory(parentDirectory);
+            FileSystem mockFileSystem = new FileSystem();
+            string parentDirectory = mockFileSystem.GetTempDirectory();
+            string testDirectory = mockFileSystem.GetTempDirectory(parentDirectory, createDirectory: true);
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(cancellationTokenSource.Token);
+            IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
+                cancellationTokenSource.Token, fileSystem: mockFileSystem);
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -92,11 +95,11 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string fileInParentPath = TempPathsObtainer.GetTempFile(parentDirectory);
-            await File.Create(fileInParentPath).DisposeAsync();
+            string fileInParentPath = mockFileSystem.GetTempFile(parentDirectory);
+            await mockFileSystem.File.Create(fileInParentPath).DisposeAsync();
 
-            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
-            await File.Create(filePath).DisposeAsync();
+            string filePath = mockFileSystem.GetTempFile(testDirectory);
+            await mockFileSystem.File.Create(filePath).DisposeAsync();
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(
@@ -114,7 +117,8 @@ namespace SystemMonitor.Tests.UnitTests.Logic
         public async Task ExecuteAsync_DirectoryNotSpecified_OutputFileChangesAreNotAnalysed()
         {
             // Arrange.
-            string testDirectory = TempPathsObtainer.GetTempDirectory();
+            FileSystem mockFileSystem = new FileSystem();
+            string testDirectory = mockFileSystem.GetTempDirectory(createDirectory: true);
             Drive[] drives = [new Drive("C", @"C:\")];
 
             using StringWriter stringWriter = new StringWriter();
@@ -122,7 +126,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, drives: drives);
+                cancellationTokenSource.Token, drives, mockFileSystem);
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -130,8 +134,8 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             await EventsWaiter.WaitForEventsRegistrationAsync(stringWriter);
 
-            string filePath = TempPathsObtainer.GetTempFile(testDirectory);
-            await File.Create(filePath).DisposeAsync();
+            string filePath = mockFileSystem.GetTempFile(testDirectory);
+            await mockFileSystem.File.Create(filePath).DisposeAsync();
 
             // Assert.
             await EventsWaiter.WaitForEventsProsecutionAsync(stringWriter, expectedCreatedFiles: [filePath]);
