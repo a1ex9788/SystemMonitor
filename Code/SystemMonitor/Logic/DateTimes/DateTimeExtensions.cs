@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Globalization;
 
-namespace SystemMonitor.Logic.Utilities.DateTimes
+namespace SystemMonitor.Logic.DateTimes
 {
     internal static class DateTimeExtensions
     {

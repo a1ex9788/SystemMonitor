@@ -3,8 +3,8 @@ using System;
 using System.IO.Abstractions;
 using System.Threading;
 using SystemMonitor.Logic;
-using SystemMonitor.Logic.Utilities.DateTimes;
-using SystemMonitor.Logic.Utilities.Drives;
+using SystemMonitor.Logic.Drives;
+using SystemMonitor.Logic.DateTimes;
 
 namespace SystemMonitor
 {

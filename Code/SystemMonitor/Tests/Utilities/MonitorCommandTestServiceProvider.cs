@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Threading;
-using SystemMonitor.Logic.Utilities.DateTimes;
-using SystemMonitor.Logic.Utilities.Drives;
+using SystemMonitor.Logic.Drives;
+using SystemMonitor.Logic.DateTimes;
 using SystemMonitor.Tests.Fakes;
 
 namespace SystemMonitor.Tests.Utilities

@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
-using SystemMonitor.Logic.Utilities.DateTimes;
-using SystemMonitor.Logic.Utilities.Drives;
+using SystemMonitor.Logic.Drives;
+using SystemMonitor.Logic.DateTimes;
 using SystemMonitor.Tests.Utilities;
 
 namespace SystemMonitor.Tests.UnitTests.Logic

@@ -1,5 +1,5 @@
 using System;
-using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Logic.DateTimes;
 
 namespace SystemMonitor.Tests.Fakes
 {

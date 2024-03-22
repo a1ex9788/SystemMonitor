@@ -1,6 +1,6 @@
 using System;
 
-namespace SystemMonitor.Logic.Utilities.DateTimes
+namespace SystemMonitor.Logic.DateTimes
 {
     internal class DateTimeProvider : IDateTimeProvider
     {

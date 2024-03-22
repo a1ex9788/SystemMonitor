@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SystemMonitor.Logic.Utilities.Drives;
+using SystemMonitor.Logic.Drives;
 
 namespace SystemMonitor.Tests.Fakes
 {

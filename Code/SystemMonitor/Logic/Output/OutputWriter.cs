@@ -1,9 +1,9 @@
 using System;
 using System.IO.Abstractions;
-using SystemMonitor.Logic.Utilities;
-using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Logic.Collections;
+using SystemMonitor.Logic.DateTimes;
 
-namespace SystemMonitor.Logic
+namespace SystemMonitor.Logic.Output
 {
     internal class OutputWriter
     {

@@ -8,7 +8,7 @@ using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
-using SystemMonitor.Logic.Utilities.DateTimes;
+using SystemMonitor.Logic.DateTimes;
 using SystemMonitor.Tests.Fakes;
 using SystemMonitor.Tests.Utilities;
 

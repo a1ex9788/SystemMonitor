@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SystemMonitor.Logic.Utilities.Drives
+namespace SystemMonitor.Logic.Drives
 {
     internal interface IDrivesObtainer
     {

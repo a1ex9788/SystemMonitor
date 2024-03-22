@@ -1,4 +1,4 @@
-namespace SystemMonitor.Logic.Utilities
+namespace SystemMonitor.Logic.Collections
 {
     internal class OrderedStringArray(string[] items)
     {

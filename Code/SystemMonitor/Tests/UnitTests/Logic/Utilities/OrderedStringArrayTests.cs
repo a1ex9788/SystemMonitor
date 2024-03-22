@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SystemMonitor.Logic.Utilities;
+using SystemMonitor.Logic.Collections;
 
 namespace SystemMonitor.Tests.UnitTests.Logic.Utilities
 {

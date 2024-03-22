@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SystemMonitor.Logic.Utilities.Drives
+namespace SystemMonitor.Logic.Drives
 {
     internal class DrivesObtainer : IDrivesObtainer
     {
