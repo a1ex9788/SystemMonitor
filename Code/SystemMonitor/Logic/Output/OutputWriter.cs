@@ -5,7 +5,7 @@ using SystemMonitor.Logic.DateTimes;
 
 namespace SystemMonitor.Logic.Output
 {
-    internal class OutputWriter
+    internal class OutputWriter : IOutputWriter
     {
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly IFile file;

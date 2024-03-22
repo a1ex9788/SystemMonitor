@@ -7,7 +7,7 @@ using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Exceptions;
-using SystemMonitor.Logic;
+using SystemMonitor.Logic.Monitors;
 using SystemMonitor.Tests.Utilities;
 
 namespace SystemMonitor.Tests.UnitTests.Logic
@@ -23,7 +23,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             string outputDirectory = TempPathsObtainer.GetTempDirectory();
 
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider();
-            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+            IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
             Func<Task> action =
@@ -49,7 +49,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+            IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory, new OutputFilesInfo(outputDirectory));
@@ -94,7 +94,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+            IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory, new OutputFilesInfo(outputDirectory));
@@ -138,7 +138,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+            IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory, new OutputFilesInfo(outputDirectory));
@@ -183,7 +183,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+            IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory, new OutputFilesInfo(outputDirectory));
@@ -233,7 +233,7 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
                 cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
-            DirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<DirectoriesMonitor>();
+            IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
             Task task = directoriesMonitor.MonitorAsync(testDirectory, new OutputFilesInfo(outputDirectory));

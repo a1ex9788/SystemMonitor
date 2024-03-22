@@ -2,15 +2,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
-using SystemMonitor.Logic.Drives;
 using SystemMonitor.Logic.DateTimes;
+using SystemMonitor.Logic.Drives;
+using SystemMonitor.Logic.Monitors;
 
 namespace SystemMonitor.Logic
 {
     internal class MonitorCommand : IMonitorCommand
     {
         private readonly IDrivesObtainer drivesObtainer;
-        private readonly DirectoriesMonitor directoriesMonitor;
+        private readonly IDirectoriesMonitor directoriesMonitor;
 
         private readonly string outputDirectory;
 
@@ -18,7 +19,7 @@ namespace SystemMonitor.Logic
             IDateTimeProvider dateTimeProvider,
             IDrivesObtainer drivesObtainer,
             IFileSystem fileSystem,
-            DirectoriesMonitor directoriesMonitor)
+            IDirectoriesMonitor directoriesMonitor)
         {
             this.drivesObtainer = drivesObtainer;
             this.directoriesMonitor = directoriesMonitor;

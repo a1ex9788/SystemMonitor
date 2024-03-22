@@ -3,8 +3,10 @@ using System;
 using System.IO.Abstractions;
 using System.Threading;
 using SystemMonitor.Logic;
-using SystemMonitor.Logic.Drives;
 using SystemMonitor.Logic.DateTimes;
+using SystemMonitor.Logic.Drives;
+using SystemMonitor.Logic.Monitors;
+using SystemMonitor.Logic.Output.Factory;
 
 namespace SystemMonitor
 {
@@ -39,11 +41,16 @@ namespace SystemMonitor
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
             services.AddScoped<IDrivesObtainer, DrivesObtainer>();
 
-            services.AddScoped<IMonitorCommand, MonitorCommand>();
-            services.AddScoped<DirectoriesMonitor>();
+            services.AddScoped<IDirectoriesMonitor, DirectoriesMonitor>();
 
+            services.AddScoped<IOutputWriterFactory, OutputWriterFactory>();
+
+            services.AddScoped<IMonitorCommand, MonitorCommand>();
+
+            services.AddScoped<IFileSystemWatcherFactory, FileSystemWatcherFactory>();
             services.AddSingleton<IFileSystem, FileSystem>();
         }
     }

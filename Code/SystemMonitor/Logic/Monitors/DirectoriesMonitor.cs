@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using SystemMonitor.Exceptions;
 using SystemMonitor.Logic.DateTimes;
 using SystemMonitor.Logic.Output;
+using SystemMonitor.Logic.Output.Factory;
 
-namespace SystemMonitor.Logic
+namespace SystemMonitor.Logic.Monitors
 {
     internal class DirectoriesMonitor(
-        IDateTimeProvider dateTimeProvider, IFileSystem fileSystem, CancellationToken cancellationToken)
+        IDateTimeProvider dateTimeProvider,
+        IFileSystemWatcherFactory fileSystemWatcherFactory,
+        IFileSystem fileSystem,
+        IOutputWriterFactory outputWriterFactory,
+        CancellationToken cancellationToken)
+            : IDirectoriesMonitor
     {
-        private readonly IDateTimeProvider dateTimeProvider = dateTimeProvider;
         private readonly IDirectory directory = fileSystem.Directory;
         private readonly IFile file = fileSystem.File;
-        private readonly CancellationToken cancellationToken = cancellationToken;
 
         public async Task MonitorAsync(string directory, OutputFilesInfo outputFilesInfo)
         {
@@ -26,13 +30,13 @@ namespace SystemMonitor.Logic
 
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
-            using FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(directory);
+            using IFileSystemWatcher fileSystemWatcher = fileSystemWatcherFactory.New(directory);
 
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
 
-            OutputWriter outputWriter = new OutputWriter(
-                this.dateTimeProvider, this.directory, this.file, outputFilesInfo);
+            IOutputWriter outputWriter = outputWriterFactory.CreateOutputWriter(
+                dateTimeProvider, this.directory, this.file, outputFilesInfo);
 
             fileSystemWatcher.Changed += OnChanged(outputWriter);
             fileSystemWatcher.Created += OnCreated(outputWriter);
@@ -42,9 +46,9 @@ namespace SystemMonitor.Logic
 
             try
             {
-                while (!this.cancellationToken.IsCancellationRequested)
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(2), this.cancellationToken);
+                    await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
                 }
             }
             catch (TaskCanceledException)
@@ -53,7 +57,7 @@ namespace SystemMonitor.Logic
             }
         }
 
-        private static FileSystemEventHandler OnChanged(OutputWriter outputWriter)
+        private static FileSystemEventHandler OnChanged(IOutputWriter outputWriter)
         {
             return (object sender, FileSystemEventArgs e) =>
             {
@@ -61,7 +65,7 @@ namespace SystemMonitor.Logic
             };
         }
 
-        private static FileSystemEventHandler OnCreated(OutputWriter outputWriter)
+        private static FileSystemEventHandler OnCreated(IOutputWriter outputWriter)
         {
             return (object sender, FileSystemEventArgs e) =>
             {
@@ -69,7 +73,7 @@ namespace SystemMonitor.Logic
             };
         }
 
-        private static FileSystemEventHandler OnDeleted(OutputWriter outputWriter)
+        private static FileSystemEventHandler OnDeleted(IOutputWriter outputWriter)
         {
             return (object sender, FileSystemEventArgs e) =>
             {
@@ -77,7 +81,7 @@ namespace SystemMonitor.Logic
             };
         }
 
-        private static RenamedEventHandler OnRenamed(OutputWriter outputWriter)
+        private static RenamedEventHandler OnRenamed(IOutputWriter outputWriter)
         {
             return (object sender, RenamedEventArgs e) =>
             {
@@ -85,7 +89,7 @@ namespace SystemMonitor.Logic
             };
         }
 
-        private static ErrorEventHandler OnError(OutputWriter outputWriter)
+        private static ErrorEventHandler OnError(IOutputWriter outputWriter)
         {
             return (object sender, ErrorEventArgs e) =>
             {
