@@ -10,7 +10,7 @@ using SystemMonitor.Exceptions;
 using SystemMonitor.Logic.Monitors;
 using SystemMonitor.Tests.Utilities;
 
-namespace SystemMonitor.Tests.UnitTests.Logic
+namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
 {
     [TestClass]
     public class DirectoriesMonitorTests

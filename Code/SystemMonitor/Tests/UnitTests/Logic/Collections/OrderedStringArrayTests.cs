@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SystemMonitor.Logic.Collections;
 
-namespace SystemMonitor.Tests.UnitTests.Logic.Utilities
+namespace SystemMonitor.Tests.UnitTests.Logic.Collections
 {
     [TestClass]
     public class OrderedStringArrayTests
