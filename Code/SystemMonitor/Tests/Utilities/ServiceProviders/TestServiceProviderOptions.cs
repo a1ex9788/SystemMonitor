@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Threading;
 using SystemMonitor.Logic.Drives;
+using SystemMonitor.Logic.Monitors;
+using SystemMonitor.Logic.Output.Factory;
 
 namespace SystemMonitor.Tests.Utilities.ServiceProviders
 {
@@ -10,10 +12,14 @@ namespace SystemMonitor.Tests.Utilities.ServiceProviders
     {
         public CancellationToken? CancellationToken { get; set; }
 
+        public IDirectoriesMonitor? DirectoriesMonitor { get; set; }
+
         public IReadOnlyCollection<Drive>? Drives { get; set; }
 
-        public IFileSystem? FileSystem { get; set; }
+        public MockFileSystem? FileSystem { get; set; }
 
         public DateTime? Now { get; set; }
+
+        public IOutputWriterFactory? OutputWriterFactory { get; set; }
     }
 }
