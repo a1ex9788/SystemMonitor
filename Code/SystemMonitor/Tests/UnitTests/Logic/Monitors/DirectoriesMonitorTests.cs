@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SystemMonitor.Exceptions;
 using SystemMonitor.Logic.Monitors;
 using SystemMonitor.Tests.Utilities;
+using SystemMonitor.Tests.Utilities.ServiceProviders;
 
 namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
 {
@@ -48,7 +49,12 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    FileSystem = mockFileSystem,
+                    Now = now,
+                });
             IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
@@ -93,7 +99,12 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    FileSystem = mockFileSystem,
+                    Now = now,
+                });
             IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
@@ -137,7 +148,12 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    FileSystem = mockFileSystem,
+                    Now = now,
+                });
             IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
@@ -182,7 +198,12 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    FileSystem = mockFileSystem,
+                    Now = now,
+                });
             IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.
@@ -232,7 +253,12 @@ namespace SystemMonitor.Tests.UnitTests.Logic.Monitors
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, fileSystem: mockFileSystem, now: now);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    FileSystem = mockFileSystem,
+                    Now = now,
+                });
             IDirectoriesMonitor directoriesMonitor = serviceProvider.GetRequiredService<IDirectoriesMonitor>();
 
             // Act.

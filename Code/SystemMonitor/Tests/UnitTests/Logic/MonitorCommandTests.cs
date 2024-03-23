@@ -8,9 +8,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SystemMonitor.Logic;
-using SystemMonitor.Logic.Drives;
 using SystemMonitor.Logic.DateTimes;
+using SystemMonitor.Logic.Drives;
 using SystemMonitor.Tests.Utilities;
+using SystemMonitor.Tests.Utilities.ServiceProviders;
 
 namespace SystemMonitor.Tests.UnitTests.Logic
 {
@@ -38,7 +39,13 @@ namespace SystemMonitor.Tests.UnitTests.Logic
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             DateTime now = RandomDateTimeGenerator.Get();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, drives, mockFileSystem, now);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    Drives = drives,
+                    FileSystem = mockFileSystem,
+                    Now = now,
+                });
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -87,7 +94,11 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, fileSystem: mockFileSystem);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    FileSystem = mockFileSystem,
+                });
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
@@ -126,7 +137,12 @@ namespace SystemMonitor.Tests.UnitTests.Logic
 
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IServiceProvider serviceProvider = new MonitorCommandTestServiceProvider(
-                cancellationTokenSource.Token, drives, mockFileSystem);
+                new TestServiceProviderOptions
+                {
+                    CancellationToken = cancellationTokenSource.Token,
+                    Drives = drives,
+                    FileSystem = mockFileSystem,
+                });
             IMonitorCommand monitorCommand = serviceProvider.GetRequiredService<IMonitorCommand>();
 
             // Act.
