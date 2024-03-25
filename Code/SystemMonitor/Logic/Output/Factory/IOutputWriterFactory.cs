@@ -5,7 +5,7 @@ namespace SystemMonitor.Logic.Output.Factory
 {
     internal interface IOutputWriterFactory
     {
-        IOutputWriter CreateOutputWriter(
+        IOutputWriter Create(
             IDateTimeProvider dateTimeProvider, IDirectory directory, IFile file, OutputFilesInfo outputFilesInfo);
     }
 }

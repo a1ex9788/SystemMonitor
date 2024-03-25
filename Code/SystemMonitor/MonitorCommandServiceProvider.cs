@@ -7,6 +7,8 @@ using SystemMonitor.Logic.DateTimes;
 using SystemMonitor.Logic.Drives;
 using SystemMonitor.Logic.Monitors;
 using SystemMonitor.Logic.Output.Factory;
+using FileSystemWatcherFactory = SystemMonitor.Logic.FileSystemWatchers.Factory.FileSystemWatcherFactory;
+using IFileSystemWatcherFactory = SystemMonitor.Logic.FileSystemWatchers.Factory.IFileSystemWatcherFactory;
 
 namespace SystemMonitor
 {
@@ -44,13 +46,14 @@ namespace SystemMonitor
 
             services.AddScoped<IDrivesObtainer, DrivesObtainer>();
 
+            services.AddScoped<IFileSystemWatcherFactory, FileSystemWatcherFactory>();
+
             services.AddScoped<IDirectoriesMonitor, DirectoriesMonitor>();
 
             services.AddScoped<IOutputWriterFactory, OutputWriterFactory>();
 
             services.AddScoped<IMonitorCommand, MonitorCommand>();
 
-            services.AddScoped<IFileSystemWatcherFactory, FileSystemWatcherFactory>();
             services.AddSingleton<IFileSystem, FileSystem>();
         }
     }

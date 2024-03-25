@@ -7,6 +7,8 @@ using SystemMonitor.Exceptions;
 using SystemMonitor.Logic.DateTimes;
 using SystemMonitor.Logic.Output;
 using SystemMonitor.Logic.Output.Factory;
+using IFileSystemWatcher = SystemMonitor.Logic.FileSystemWatchers.IFileSystemWatcher;
+using IFileSystemWatcherFactory = SystemMonitor.Logic.FileSystemWatchers.Factory.IFileSystemWatcherFactory;
 
 namespace SystemMonitor.Logic.Monitors
 {
@@ -30,12 +32,9 @@ namespace SystemMonitor.Logic.Monitors
 
             Console.WriteLine("Monitoring directory '{0}'...", directory);
 
-            using IFileSystemWatcher fileSystemWatcher = fileSystemWatcherFactory.New(directory);
+            using IFileSystemWatcher fileSystemWatcher = fileSystemWatcherFactory.Create(directory);
 
-            fileSystemWatcher.EnableRaisingEvents = true;
-            fileSystemWatcher.IncludeSubdirectories = true;
-
-            IOutputWriter outputWriter = outputWriterFactory.CreateOutputWriter(
+            IOutputWriter outputWriter = outputWriterFactory.Create(
                 dateTimeProvider, this.directory, this.file, outputFilesInfo);
 
             fileSystemWatcher.Changed += OnChanged(outputWriter);
